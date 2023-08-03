@@ -491,6 +491,7 @@ openslide_werror=""
 native=false
 while getopts "a:j:m:no:p:s:w" opt
 do
+    echo $opt
     case "$opt" in
     j)
         parallel="-j${OPTARG}"
@@ -551,7 +552,7 @@ updates)
 *)
     cat <<EOF
 Usage: $0 [-p<pkgver>] sdist
-       $0 [-o{win|linux|mac}] [-j<n>] [-n] [-m{win-i686|win-x86_64|mac-x86_64|linux-x86_64}] [-p<pkgver>] [-s<suffix>] [-w] bdist
+       $0 [[-j<n>] [-n] [-m{win-i686|win-x86_64|mac-x86_64|linux-x86_64}] [-p<pkgver>] [-s<suffix>] [-w] bdist
        $0 [-m{32|64}] clean [package...]
        $0 updates
 

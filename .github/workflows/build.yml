@@ -268,16 +268,19 @@ jobs:
         shell: bash
         run: |
           echo "======== ${{ matrix.arch }} ========"
-          cd "${GITHUB_WORKSPACE}/openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}/bin"
-          if [ "${{ matrix.os }}" = "win" ]; then
-            SHOW_PROPERTIES_EXE=./openslide-show-properties.exe
-          else
-            SHOW_PROPERTIES_EXE=./openslide-show-properties
-          fi
-          OPENSLIDE_DEBUG=? "$SHOW_PROPERTIES_EXE" 2> conftest ||:
-          if ! grep -q "  synthetic  " conftest; then
-              # OpenSlide 3.4.1
-              echo "Smoke test not supported in this OpenSlide version"
-              exit 0
-          fi
-          OPENSLIDE_DEBUG=synthetic "$SHOW_PROPERTIES_EXE" ""
+            cd "${GITHUB_WORKSPACE}/openslide-win${bits}-${{ inputs.pkgver }}/bin"
+            if [ -e slidetool.exe ]; then
+                showprops="./slidetool.exe prop list"
+            else
+                # OpenSlide 3.4.1
+                showprops="./openslide-show-properties.exe"
+            fi
+            OPENSLIDE_DEBUG=? $showprops 2> conftest ||:
+            if ! grep -q "  synthetic  " conftest; then
+                # OpenSlide 3.4.1
+                echo "Smoke test not supported in this OpenSlide version"
+                continue
+            fi
+            OPENSLIDE_DEBUG=synthetic $showprops ""
+
+            

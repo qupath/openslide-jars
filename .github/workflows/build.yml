@@ -129,7 +129,7 @@ jobs:
     name: Build (Windows/Linux)
     needs: sdist
     runs-on: ubuntu-latest
-    container: ghcr.io/openslide/winbuild-builder:latest
+    container: ghcr.io/alanocallaghan/winbuild-builder:latest
     steps:
       - name: Download source zip
         uses: actions/download-artifact@v3

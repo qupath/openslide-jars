@@ -123,7 +123,7 @@ get_artifacts() {
             openslide_java_artifacts="openslide-jni.dll openslide.jar"    
             ;;
         linux)
-            openslide_artifacts="libopenslide.so libopenslide.so.0 libopenslide.so.0.4.1 openslide-quickhash1sum openslide-show-properties openslide-write-png slidetool"
+            openslide_artifacts="libopenslide.so libopenslide.so.0 libopenslide.so.0.4.1 openslide-quickhash1sum openslide-show-properties openslide-write-png"
             openslide_java_artifacts="libopenslide-jni.so openslide.jar"
             ;;
         mac)
@@ -312,7 +312,7 @@ bdist() {
         echo "${ver_suffix}" > "${os}/${build_arch}/.suffix"
     fi
 
-    tag_cachedir "${build_bits}"
+    tag_cachedir "${os}/${build_arch}"
 
     (
         override_lock

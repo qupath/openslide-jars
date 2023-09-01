@@ -268,7 +268,7 @@ jobs:
         shell: bash
         run: |
           echo "======== ${{ matrix.arch }} ========"
-            cd "${GITHUB_WORKSPACE}/openslide-win${bits}-${{ inputs.pkgver }}/bin"
+            cd "${GITHUB_WORKSPACE}/openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}/bin"
             if [ -e slidetool.exe ]; then
                 showprops="./slidetool.exe prop list"
             else

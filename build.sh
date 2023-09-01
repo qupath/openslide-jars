@@ -511,11 +511,11 @@ do
         ;;
     m)
         case ${OPTARG} in
-        "win-i686"|"win-x86_64"|"mac-x86_64"|"linux-x86_64")
+        "win-i686"|"win-x86_64"|"mac-x86_64"|"mac-arm64"|"linux-x86_64")
             target=${OPTARG}
             ;;
         *)
-            echo "-mwin-i686, -mwin-x86_64, -mmac-x86_64 or -mlinux-x86_64 only."
+            echo "-mwin-i686, -mwin-x86_64, -mmac-x86_64, -mmac-arm64 or -mlinux-x86_64 only."
             exit 1
             ;;
         esac

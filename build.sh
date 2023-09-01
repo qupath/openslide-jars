@@ -170,6 +170,18 @@ meson_wrap_version() {
     echo "$ver"
 }
 
+tag_cachedir() {
+    # $1 = directory path
+    if [ ! -e "$1/CACHEDIR.TAG" ]; then
+        mkdir -p "$1"
+        cat > "$1/CACHEDIR.TAG" <<EOF
+Signature: 8a477f597d28d172789f06886806bc55
+# This file is a cache directory tag created by openslide-winbuild.
+# For information about cache directory tags, see https://bford.info/cachedir/
+EOF
+    fi
+}
+
 override_lock() {
     # Always run this in a subshell!  Lock releases when shell exits.
     # If there are no overrides we can skip the serialization.
@@ -299,6 +311,8 @@ bdist() {
         mkdir -p "${os}/${build_arch}"
         echo "${ver_suffix}" > "${os}/${build_arch}/.suffix"
     fi
+
+    tag_cachedir "${build_bits}"
 
     (
         override_lock

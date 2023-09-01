@@ -32,7 +32,14 @@ if host_machine.system() == 'windows'
 endif
 subproject('zlib')
 subproject('libpng')
-subproject('libjpeg-turbo')
+subproject(
+  'libjpeg-turbo',
+  default_options : [
+    # skip the TurboJPEG wrapper
+    'jpeg-turbo=disabled',
+    'tests=disabled',
+  ],
+)
 subproject('libtiff')
 subproject(
   'libopenjp2',

@@ -11,9 +11,3 @@ jobs:
 
       - store_artifacts:
           path: openslide-mac-arm64-local.tar.gz
-
-workflows:
-  version: 2
-  build:
-    jobs:
-      - build

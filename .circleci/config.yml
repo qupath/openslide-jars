@@ -4,10 +4,9 @@ jobs:
   build:
     steps:
       - checkout
-      - run: ./build.sh -mmac-arm64 -n bdist
+      - run: ./build.sh -mmac-arm64 -n -p "local" bdist
       - store_artifacts:
-          path:
-            *.tar.gz
+          path: openslide-mac-arm64-local.tar.gz
 
 workflows:
   version: 2

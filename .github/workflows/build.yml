@@ -156,8 +156,8 @@ jobs:
           if [ "${{ inputs.werror }}" = true ]; then
               werror="-w"
           fi
-          ./build.sh -m${{ matrix.arch }} ${suffix:+-s$suffix} \
-              -p "${{ inputs.pkgver }}" $werror -m "${{ matrix.os }}${{ matrix.arch }}" bdist
+          ./build.sh ${suffix:+-s$suffix} \
+              -p "${{ inputs.pkgver }}" $werror -m "${{ matrix.os }}-${{ matrix.arch }}" bdist
           mkdir -p "artifacts/${{ needs.sdist.outputs.artifact }}"
           EXT="tar.gz"
           if [ "${{ matrix.os }}" = "win" ]; then
@@ -219,7 +219,7 @@ jobs:
           if [ "${{ inputs.werror }}" = true ]; then
               werror="-w"
           fi
-          ./build.sh -m${{ matrix.arch }} ${suffix:+-s$suffix} \
+          ./build.sh ${suffix:+-s$suffix} \
               $werror -n -m "${{ matrix.os }}${{ matrix.arch }}" -p "${{ inputs.pkgver }}" bdist
           mkdir -p "artifacts/${{ needs.sdist.outputs.artifact }}"
           mv "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.tar.gz" \

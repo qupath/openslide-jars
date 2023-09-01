@@ -50,7 +50,7 @@ Parallel build with the specified parallelism.
 
 #### `-n`
 
-Perform native build instead of a cross build (default: cross). Mainly useful
+Perform native build instead of a cross build (default: cross). Mainly useful for
 building mac binaries natively e.g. on a github action runner.
 
 #### `-m{win-i686|win-x86_64|linux-x86_64|mac-x86_64}`

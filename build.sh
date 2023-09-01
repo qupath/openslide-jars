@@ -491,7 +491,6 @@ openslide_werror=""
 native=false
 while getopts "a:j:m:no:p:s:w" opt
 do
-    echo $opt
     case "$opt" in
     j)
         parallel="-j${OPTARG}"

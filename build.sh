@@ -404,7 +404,7 @@ bdist() {
             tar -cvzf "${zipdir}.tar.gz" "${zipdir}"
             ;;
     esac
-    rm -rf "${zipdir}"
+    # rm -rf "${zipdir}"
 }
 
 clean() {

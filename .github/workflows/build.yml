@@ -279,7 +279,7 @@ jobs:
             if ! grep -q "  synthetic  " conftest; then
                 # OpenSlide 3.4.1
                 echo "Smoke test not supported in this OpenSlide version"
-                continue
+                exit 0
             fi
             OPENSLIDE_DEBUG=synthetic $showprops ""
 

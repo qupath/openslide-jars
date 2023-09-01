@@ -4,7 +4,11 @@ jobs:
   build:
     steps:
       - checkout
-      - run: ./build.sh -mmac-arm64 -n -p "local" bdist
+      - run:
+          name: Build binary distribution
+          command: |
+            ./build.sh -mmac-arm64 -n -p "local" bdist
+
       - store_artifacts:
           path: openslide-mac-arm64-local.tar.gz
 

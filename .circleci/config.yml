@@ -7,10 +7,9 @@ jobs:
     steps:
       - checkout
       - run: brew install meson ninja gawk
-      - run: echo "export PKGVER=main-$(echo << pipeline.git.revision >> | cut -c-7)" >> "$BASH_ENV"
-      - run: ./build.sh -mmac-arm64 -n -p "$PKGVER" bdist
+      - run: ./build.sh -mmac-arm64 -n -p "main-<< pipeline.git.revision >>" bdist
       - store_artifacts:
-          path: openslide-mac-arm64-$PKGVER.tar.gz
+          path: openslide-mac-arm64-main-<< pipeline.git.revision >>.tar.gz
 
 workflows:
   version: 2

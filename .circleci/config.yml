@@ -6,10 +6,11 @@ jobs:
       xcode: "14.2.0"
     steps:
       - checkout
-      - run: brew install meson ninja
-      - run: ./build.sh -mmac-arm64 -n -p "local" bdist
+      - run: brew install meson ninja gawk
+      - run: echo "pkgver=main-$(echo ${{ pipeline.git.revision }} | cut -c-7)"
+      - run: ./build.sh -mmac-arm64 -n -p "$pkgver" bdist
       - store_artifacts:
-          path: openslide-mac-arm64-local.tar.gz
+          path: openslide-mac-arm64-$pkgver.tar.gz
 
 workflows:
   version: 2

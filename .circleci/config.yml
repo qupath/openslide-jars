@@ -6,15 +6,8 @@ jobs:
       xcode: "14.2.0"
     steps:
       - checkout
-      - install: 
-          name: Install meson
-          command: |
-            brew install meson ninja
-      - run:
-          name: Build binary distribution
-          command: |
-            ./build.sh -mmac-arm64 -n -p "local" bdist
-
+      - run: brew install meson ninja
+      - run: ./build.sh -mmac-arm64 -n -p "local" bdist
       - store_artifacts:
           path: openslide-mac-arm64-local.tar.gz
 

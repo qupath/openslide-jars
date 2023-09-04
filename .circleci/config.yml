@@ -5,11 +5,11 @@ jobs:
     macos:
       xcode: "14.2.0"
     steps:
+      - checkout
       - install: 
           name: Install meson
           command: |
             brew install meson ninja
-      - checkout
       - run:
           name: Build binary distribution
           command: |

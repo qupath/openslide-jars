@@ -269,11 +269,20 @@ jobs:
         run: |
           echo "======== ${{ matrix.arch }} ========"
             cd "${GITHUB_WORKSPACE}/openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}/bin"
-            if [ -e slidetool.exe ]; then
-                showprops="./slidetool.exe prop list"
+            if [ "$RUNNER_OS" == "Windows" ]; then
+              if [ -e slidetool.exe ]; then
+                  showprops="./slidetool.exe prop list"
+              else
+                  # OpenSlide 3.4.1
+                  showprops="./openslide-show-properties.exe"
+              fi
             else
-                # OpenSlide 3.4.1
-                showprops="./openslide-show-properties.exe"
+              if [ -e slidetool ]; then
+                  showprops="./slidetool prop list"
+              else
+                  # OpenSlide 3.4.1
+                  showprops="./openslide-show-properties"
+              fi
             fi
             OPENSLIDE_DEBUG=? $showprops 2> conftest ||:
             if ! grep -q "  synthetic  " conftest; then

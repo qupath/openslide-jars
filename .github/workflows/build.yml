@@ -186,7 +186,7 @@ jobs:
     steps:
       - name: Install homebrew dependencies
         run: |
-          brew install meson ninja gawk
+          brew install meson ninja gawk flock
       - name: Install Java
         uses: actions/setup-java@v3
         with:

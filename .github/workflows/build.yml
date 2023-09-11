@@ -83,12 +83,12 @@ jobs:
       - name: Collect overrides
         if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
         run: tar cf overrides.tar override
-      - name: Upload overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-overrides
-          path: overrides.tar
+      # - name: Upload overrides
+      #   if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: build-overrides
+      #     path: overrides.tar
 
       - name: Cache sources
         uses: actions/cache@v3

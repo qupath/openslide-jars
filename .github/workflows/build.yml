@@ -210,8 +210,6 @@ jobs:
       - name: Unpack overrides
         if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
         run: tar xf overrides.tar
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
       - name: Build binary zip
         run: |
           suffix="${{ needs.sdist.outputs.version_suffix }}"

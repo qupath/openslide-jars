@@ -80,15 +80,15 @@ jobs:
           ref: ${{ inputs.openslide_java_ref }}
           path: override/openslide_java
           persist-credentials: false
-      # - name: Collect overrides
-      #   if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
-      #   run: tar cf overrides.tar override
-      # - name: Upload overrides
-      #   if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: build-overrides
-      #     path: overrides.tar
+      - name: Collect overrides
+        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        run: tar cf overrides.tar override
+      - name: Upload overrides
+        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-overrides
+          path: overrides.tar
 
       - name: Cache sources
         uses: actions/cache@v3
@@ -202,16 +202,16 @@ jobs:
               unzip "openslide-build-${{ inputs.pkgver }}.zip")
           mv "${{ needs.sdist.outputs.artifact }}/openslide-build-${{ inputs.pkgver }}"/* .
           rm -r "${{ needs.sdist.outputs.artifact }}"
-      # - name: Download overrides
-      #   if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: build-overrides
-      # - name: Unpack overrides
-      #   if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
-      #   run: tar xf overrides.tar
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
+      - name: Download overrides
+        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        uses: actions/download-artifact@v3
+        with:
+          name: build-overrides
+      - name: Unpack overrides
+        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        run: tar xf overrides.tar
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Build binary zip
         run: |
           suffix="${{ needs.sdist.outputs.version_suffix }}"
@@ -268,28 +268,28 @@ jobs:
         shell: bash
         run: |
           echo "======== ${{ matrix.arch }} ========"
-            cd "${GITHUB_WORKSPACE}/openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}/bin"
-            if [ "$RUNNER_OS" == "Windows" ]; then
-              if [ -e slidetool.exe ]; then
-                  showprops="./slidetool.exe prop list"
-              else
-                  # OpenSlide 3.4.1
-                  showprops="./openslide-show-properties.exe"
-              fi
+          cd "${GITHUB_WORKSPACE}/openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}/bin"
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            if [ -e slidetool.exe ]; then
+                showprops="./slidetool.exe prop list"
             else
-              if [ -e slidetool ]; then
-                  showprops="./slidetool prop list"
-              else
-                  # OpenSlide 3.4.1
-                  showprops="./openslide-show-properties"
-              fi
-            fi
-            OPENSLIDE_DEBUG=? $showprops 2> conftest ||:
-            if ! grep -q "  synthetic  " conftest; then
                 # OpenSlide 3.4.1
-                echo "Smoke test not supported in this OpenSlide version"
-                exit 0
+                showprops="./openslide-show-properties.exe"
             fi
-            OPENSLIDE_DEBUG=synthetic $showprops ""
+          else
+            if [ -e slidetool ]; then
+                showprops="./slidetool prop list"
+            else
+                # OpenSlide 3.4.1
+                showprops="./openslide-show-properties"
+            fi
+          fi
+          OPENSLIDE_DEBUG=? $showprops 2> conftest ||:
+          if ! grep -q "  synthetic  " conftest; then
+              # OpenSlide 3.4.1
+              echo "Smoke test not supported in this OpenSlide version"
+              exit 0
+          fi
+          OPENSLIDE_DEBUG=synthetic $showprops ""
 
             

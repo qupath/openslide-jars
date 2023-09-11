@@ -7,9 +7,9 @@ jobs:
     steps:
       - checkout
       - run: brew install meson ninja gawk
-      - run: ./build.sh -mmac-arm64 -n -p "main-<< pipeline.git.revision >>" bdist
+      - run: ./build.sh -mmac-arm64 -n -p  bdist
       - store_artifacts:
-          path: openslide-mac-arm64-main-<< pipeline.git.revision >>.tar.gz
+          path: openslide-mac-arm64-main.tar.gz
 
 workflows:
   version: 2

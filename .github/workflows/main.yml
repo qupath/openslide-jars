@@ -29,7 +29,7 @@ jobs:
       openslide_repo: openslide/openslide
       openslide_ref: main
       openslide_java_repo: openslide/openslide-java
-      openslide_java_ref: c5dea49c63daf5c836adbbf8cb9e95e98f63b7b5
+      openslide_java_ref: main
       openslide_winbuild_repo: ${{ github.repository }}
       openslide_winbuild_ref: ${{ github.ref }}
       pkgver: ${{ needs.setup.outputs.pkgver }}

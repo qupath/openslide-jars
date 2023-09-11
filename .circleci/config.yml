@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run: brew install meson ninja gawk
-      - run: ./build.sh -mmac-arm64 -n -p  bdist
+      - run: ./build.sh -mmac-arm64 -n -p main bdist
       - store_artifacts:
           path: openslide-mac-arm64-main.tar.gz
 

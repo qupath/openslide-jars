@@ -36,8 +36,6 @@ jobs:
     with:
       openslide_repo: openslide/openslide
       openslide_ref: main
-      openslide_java_repo: openslide/openslide-java
-      openslide_java_ref: main
       openslide_winbuild_repo: ${{ github.repository }}
       openslide_winbuild_ref: ${{ github.ref }}
       pkgver: ${{ needs.setup.outputs.pkgver }}-git

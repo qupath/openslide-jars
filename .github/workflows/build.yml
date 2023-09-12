@@ -13,19 +13,11 @@ on:
         description: Override OpenSlide with this openslide_repo ref
         required: false
         type: string
-      openslide_java_repo:
-        description: Override OpenSlide Java with this repo
-        required: false
-        type: string
-      openslide_java_ref:
-        description: Override OpenSlide Java with this openslide_java_repo ref
-        required: false
-        type: string
       openslide_winbuild_repo:
         description: Use openslide-winbuild from this repo
         required: false
         type: string
-        default: openslide/openslide-winbuild
+        default: alanocallaghan/openslide-cross-builds
       openslide_winbuild_ref:
         description: Use openslide-winbuild from this ref
         required: false
@@ -72,19 +64,11 @@ jobs:
           ref: ${{ inputs.openslide_ref }}
           path: override/openslide
           persist-credentials: false
-      - name: Check out OpenSlide Java
-        if: inputs.openslide_java_repo != ''
-        uses: actions/checkout@v3
-        with:
-          repository: ${{ inputs.openslide_java_repo }}
-          ref: ${{ inputs.openslide_java_ref }}
-          path: override/openslide_java
-          persist-credentials: false
       - name: Collect overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        if: inputs.openslide_repo != ''
         run: tar cf overrides.tar override
       - name: Upload overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        if: inputs.openslide_repo != ''
         uses: actions/upload-artifact@v3
         with:
           name: build-overrides
@@ -142,12 +126,12 @@ jobs:
           mv "${{ needs.sdist.outputs.artifact }}/openslide-build-${{ inputs.pkgver }}"/* .
           rm -r "${{ needs.sdist.outputs.artifact }}"
       - name: Download overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        if: inputs.openslide_repo != ''
         uses: actions/download-artifact@v3
         with:
           name: build-overrides
       - name: Unpack overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        if: inputs.openslide_repo != ''
         run: tar xf overrides.tar
       - name: Build binary zip
         run: |
@@ -187,11 +171,6 @@ jobs:
       - name: Install homebrew dependencies
         run: |
           brew install meson ninja gawk flock
-      - name: Install Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
       - name: Download source zip
         uses: actions/download-artifact@v3
         with:
@@ -203,12 +182,12 @@ jobs:
           mv "${{ needs.sdist.outputs.artifact }}/openslide-build-${{ inputs.pkgver }}"/* .
           rm -r "${{ needs.sdist.outputs.artifact }}"
       - name: Download overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        if: inputs.openslide_repo != ''
         uses: actions/download-artifact@v3
         with:
           name: build-overrides
       - name: Unpack overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
+        if: inputs.openslide_repo != ''
         run: tar xf overrides.tar
       - name: Build binary zip
         run: |

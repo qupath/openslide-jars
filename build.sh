@@ -41,7 +41,6 @@ libxml2_name="libxml2"
 uthash_name="uthash"
 libdicom_name="libdicom"
 openslide_name="OpenSlide"
-openslide_java_name="OpenSlide Java"
 
 # Locations of license files within the source tree
 ssp_licenses="COPYING3 COPYING.RUNTIME"
@@ -64,7 +63,7 @@ uthash_licenses="LICENSE"
 libdicom_licenses="LICENSE"
 # Remove workaround in bdist() when updating these
 openslide_licenses="LICENSE.txt lgpl-2.1.txt COPYING.LESSER"
-openslide_java_licenses="COPYING.LESSER"
+
 
 # Update-checking URLs
 ssp_upurl="https://mirrors.concertpass.com/gcc/releases/"
@@ -86,7 +85,6 @@ libxml2_upurl="https://gitlab.gnome.org/GNOME/libxml2/tags"
 uthash_upurl="https://github.com/troydhanson/uthash/tags"
 libdicom_upurl="https://github.com/ImagingDataCommons/libdicom/tags"
 openslide_upurl="https://github.com/openslide/openslide/tags"
-openslide_java_upurl="https://github.com/openslide/openslide-java/tags"
 
 # Update-checking regexes
 ssp_upregex="gcc-([0-9.]+)/"
@@ -108,8 +106,7 @@ libxml2_upregex="archive/v([0-9.]+)/"
 uthash_upregex="archive/refs/tags/v([0-9.]+)\.tar"
 libdicom_upregex="archive/refs/tags/v([0-9.]+)\.tar"
 openslide_upregex="archive/refs/tags/v([0-9.]+)\.tar"
-# Exclude old v1.0.0 tag
-openslide_java_upregex="archive/refs/tags/v1\.0\.0\.tar.*|.*archive/refs/tags/v([0-9.]+)\.tar"
+
 
 # wget standard options
 wget="wget -q"
@@ -120,15 +117,12 @@ get_artifacts() {
             ssp_artifacts="libssp-0.dll"
             winpthreads_artifacts="libwinpthread-1.dll"
             openslide_artifacts="libopenslide-0.dll openslide-quickhash1sum.exe openslide-show-properties.exe openslide-write-png.exe slidetool.exe"
-            openslide_java_artifacts="openslide-jni.dll openslide.jar"    
             ;;
         linux)
             openslide_artifacts="libopenslide.so libopenslide.so.0 libopenslide.so.0.4.1 openslide-quickhash1sum openslide-show-properties openslide-write-png"
-            openslide_java_artifacts="libopenslide-jni.so openslide.jar"
             ;;
         mac)
             openslide_artifacts="libopenslide.dylib libopenslide.0.dylib openslide-quickhash1sum openslide-show-properties openslide-write-png"
-            openslide_java_artifacts="libopenslide-jni.jnilib openslide.jar"
             ;;
     esac
 }
@@ -136,10 +130,10 @@ get_artifacts() {
 get_packages() {
     case "$1" in
         win)
-            echo "ssp winpthreads zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide openslide_java"
+            echo "ssp winpthreads zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"
             ;;
         *)
-            echo "zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide openslide_java"
+            echo "zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"
     esac
 }
 
@@ -240,8 +234,7 @@ build() {
                 --wrap-mode nofallback \
                 "$build" meson \
                 ${ver_suffix:+-Dversion_suffix=${ver_suffix}} \
-                ${openslide_werror:+-Dopenslide:werror=true} \
-                ${openslide_werror:+-Dopenslide-java:werror=true}
+                ${openslide_werror:+-Dopenslide:werror=true}
         else
             echo "Running cross build..."
             meson setup \
@@ -250,8 +243,7 @@ build() {
                 --wrap-mode nofallback \
                 "$build" meson \
                 ${ver_suffix:+-Dversion_suffix=${ver_suffix}} \
-                ${openslide_werror:+-Dopenslide:werror=true} \
-                ${openslide_werror:+-Dopenslide-java:werror=true}
+                ${openslide_werror:+-Dopenslide:werror=true}
         fi
     fi
     meson compile -C "$build" $parallel
@@ -261,11 +253,6 @@ build() {
     # vs. fallback) than the initial build.  Do this by setting prefix to "/"
     # and then using --destdir to install into the real rootdir.
     meson install -C "$build" --only-changed --no-rebuild --destdir "${root}"
-
-    # Move OpenSlide Java artifacts to the right place
-    pushd "${root}/${lib}/openslide-java" >/dev/null
-    cp ${openslide_java_artifacts} "${root}/bin/"
-    popd >/dev/null
 }
 
 sdist() {

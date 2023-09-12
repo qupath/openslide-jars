@@ -118,4 +118,4 @@ subproject(
     'version_suffix=' + get_option('version_suffix'),
   ],
 )
-subproject('openslide-java')
+

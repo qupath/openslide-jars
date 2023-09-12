@@ -204,8 +204,6 @@ override_init() {
             meson_name=$(echo "$package" | tr _ -)
             ln -s "../../override/${package}" \
                     "meson/subprojects/${meson_name}"
-            ls "meson/subprojects/${meson_name}.wrap"
-            echo "mv meson/subprojects/${meson_name}.wrap meson/subprojects/${meson_name}.wrap.overridden"
             mv "meson/subprojects/${meson_name}.wrap" \
                     "meson/subprojects/${meson_name}.wrap.overridden"
         fi

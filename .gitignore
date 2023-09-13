@@ -16,3 +16,4 @@ openslide-win*
 meson/subprojects/gvdb.wrap
 *.tar.gz
 *local
+openslide-*

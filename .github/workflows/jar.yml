@@ -22,10 +22,13 @@ jobs:
           workflow: main.yml
           name: openslide-build-.*
           name_is_regexp: true
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
       - name: Download mac-arm64 CircleCI artifact
         shell: bash
         run: |
-          ./circleci-download-latest.rb alanocallaghan/openslide-cross-builds main openslide-mac-arm64-main.tar.gz
+          ./circleci-download-latest.rb alanocallaghan/openslide-crossplatform-builds main openslide-mac-arm64-main.tar.gz
           mv openslide-mac-arm64-main.tar.gz openslide-build-main/openslide-build-main/
       - name: Unpack and organise natives
         shell: bash

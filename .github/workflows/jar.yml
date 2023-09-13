@@ -28,7 +28,7 @@ jobs:
       - name: Download mac-arm64 CircleCI artifact
         shell: bash
         run: |
-          ./circleci-download-latest.rb alanocallaghan/openslide-crossplatform-builds main openslide-mac-arm64-main.tar.gz
+          ./circleci-download-latest.rb -u alanocallaghan -r openslide-crossplatform-builds -b main
           mv openslide-mac-arm64-main.tar.gz openslide-build-main/openslide-build-main/
       - name: Unpack and organise natives
         shell: bash

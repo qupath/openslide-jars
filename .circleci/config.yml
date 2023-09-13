@@ -1,19 +1,11 @@
 version: 2.1
 resource_class: macos.m1.medium.gen1
-jobs:
-  build:
-    macos:
-      xcode: "14.2.0"
-    steps:
-      - checkout
-      - run: git clone git@github.com:openslide/openslide.git override/openslide
-      - run: brew install meson ninja gawk flock
-      - run: ./build.sh -mmac-arm64 -n -p main bdist
-      - store_artifacts:
-          path: openslide-mac-arm64-main.tar.gz
-
-workflows:
-  version: 2
-  build:
-    jobs:
-      - build
+macos:
+  xcode: "14.2.0"
+steps:
+  - checkout
+  - run: git clone git@github.com:openslide/openslide.git override/openslide
+  - run: brew install meson ninja gawk flock
+  - run: ./build.sh -mmac-arm64 -n -p main bdist
+  - store_artifacts:
+      path: openslide-mac-arm64-main.tar.gz

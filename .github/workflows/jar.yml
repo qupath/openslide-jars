@@ -59,10 +59,10 @@ jobs:
       - name: Make jar
         shell: bash
         run: |
-          jar cvf openslide-natives-mac-aarch64.jar darwin-arm64
-          jar cvf openslide-natives-osx.jar darwin-x86-64
-          jar cvf openslide-natives-linux.jar linux-x86-64
-          jar cvf openslide-natives-windows.jar win32-x86-64
+          jar cvf openslide-natives-darwin-arm64.jar darwin-arm64
+          jar cvf openslide-natives-darwin-x86-64.jar darwin-x86-64
+          jar cvf openslide-natives-linux-x86-64.jar linux-x86-64
+          jar cvf openslide-natives-win32-x86-64.jar win32-x86-64
           mkdir -p openslide-natives
           mv *.jar openslide-natives
       - name: Upload jar

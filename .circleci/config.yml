@@ -7,7 +7,6 @@ jobs:
     steps:
       - checkout
       - run: git clone git@github.com:openslide/openslide.git override/openslide
-      - run: git clone git@github.com:openslide/openslide-java.git override/openslide-java
       - run: brew install meson ninja gawk flock
       - run: ./build.sh -mmac-arm64 -n -p main bdist
       - store_artifacts:

@@ -40,7 +40,9 @@ subproject(
     'tests=disabled',
   ],
 )
-subproject('libtiff', default_options: ['webp=disabled'])
+subproject('libtiff', default_options: [
+  'webp=disabled'
+])
 subproject(
   'libopenjp2',
   default_options : [

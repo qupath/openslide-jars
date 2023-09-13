@@ -24,7 +24,7 @@ jobs:
       - name: Download mac-arm64 CircleCI artifact
         shell: bash
         run: |
-          wget --quiet https://output.circle-artifacts.com/output/job/ab41f305-04e6-41c0-ac16-651ff6bb19a9/artifacts/0/openslide-mac-arm64-main.tar.gz
+          wget --quiet https://output.circle-artifacts.com/output/job/004329c5-41d8-42ad-93ad-40590fc36aca/artifacts/0/openslide-mac-arm64-main.tar.gz
           mv openslide-mac-arm64-main.tar.gz openslide-build-main/openslide-build-main/
       - name: Unpack and organise natives
         shell: bash

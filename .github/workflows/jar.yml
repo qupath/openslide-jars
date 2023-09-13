@@ -63,11 +63,13 @@ jobs:
           jar cvf openslide-natives-osx.jar darwin-x86-64
           jar cvf openslide-natives-linux.jar linux-x86-64
           jar cvf openslide-natives-windows.jar win32-x86-64
+          mkdir -p openslide-natives
+          mv *.jar openslide-natives
       - name: Upload jar
         uses: actions/upload-artifact@v1
         with:
           name: openslide-natives
-          path: openslide-*.jar
+          path: openslide-natives
       - name: Upload sources
         uses: actions/upload-artifact@v1
         with:

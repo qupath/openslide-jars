@@ -5,15 +5,15 @@ require "optparse"
 
 options = {}
 optparse = OptionParser.new do |parser|
-  parser.banner = "Usage: cci.rb -u USERNAME -p PROJECT -j JOB -a artifact"
+  parser.banner = "Usage: cci.rb -u USERNAME -r REPOSITORY -b BRANCH"
   parser.on("-u", "--username USERNAME", "Github username") do |u|
     options[:username] = u
   end
-  parser.on("-r", "--repo REPOSITOR", "Github repository") do |r|
+  parser.on("-r", "--repo REPOSITORY", "Github repository") do |r|
     options[:repo] = r
   end
   parser.on("-b", "--branch BRANCH", "git branch") do |b|
-    options[:b] = b
+    options[:branch] = b
   end
 end
 

@@ -17,7 +17,7 @@ on:
         description: Use openslide-winbuild from this repo
         required: false
         type: string
-        default: alanocallaghan/openslide-cross-builds
+        default: alanocallaghan/openslide-crossplatform-builds
       openslide_winbuild_ref:
         description: Use openslide-winbuild from this ref
         required: false

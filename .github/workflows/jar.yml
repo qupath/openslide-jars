@@ -18,7 +18,7 @@ jobs:
         id: download-artifact
         uses: dawidd6/action-download-artifact@v2
         with: 
-          repo: alanocallaghan/openslide-winbuild
+          repo: alanocallaghan/openslide-crossplatform-builds
           workflow: main.yml
           name: openslide-build-.*
           name_is_regexp: true

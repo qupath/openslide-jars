@@ -34,11 +34,11 @@ jobs:
         shell: bash
         run: |
           mv openslide-build-main/openslide-build-main/* ./
-          mkdir -p darwin-arm64 darwin-x86-64 linux-x86-64 win32-x86-64
+          mkdir -p darwin-aarch64 darwin-x86-64 linux-x86-64 win32-x86-64
           
           # mac arm
           tar xvf openslide-mac-arm64-main.tar.gz openslide-mac-arm64-main/lib/libopenslide.dylib --strip-components=2
-          mv libopenslide.dylib darwin-arm64/
+          mv libopenslide.dylib darwin-aarch64/
           
           # linux
           tar xvf openslide-linux-x86_64-main.tar.gz openslide-linux-x86_64-main/lib/libopenslide.so.0.4.1 --strip-components=2
@@ -59,7 +59,7 @@ jobs:
       - name: Make jar
         shell: bash
         run: |
-          jar cvf openslide-natives-darwin-arm64.jar darwin-arm64
+          jar cvf openslide-natives-darwin-aarch64.jar darwin-aarch64
           jar cvf openslide-natives-darwin-x86-64.jar darwin-x86-64
           jar cvf openslide-natives-linux-x86-64.jar linux-x86-64
           jar cvf openslide-natives-win32-x86-64.jar win32-x86-64

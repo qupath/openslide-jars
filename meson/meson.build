@@ -79,7 +79,7 @@ subproject(
     'iconv=disabled',
   ],
 )
-subproject('shared-mime-info')
+# subproject('shared-mime-info')
 subproject(
   'gdk-pixbuf',
   default_options : [

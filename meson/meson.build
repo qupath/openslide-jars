@@ -73,6 +73,12 @@ subproject(
     'selinux=disabled',
   ],
 )
+subproject(
+  'libxml2',
+  default_options : [
+    'iconv=disabled',
+  ],
+)
 subproject('shared-mime-info')
 subproject(
   'gdk-pixbuf',
@@ -97,12 +103,6 @@ subproject(
   default_options : [
     'dwrite=disabled',
     'tests=disabled',
-  ],
-)
-subproject(
-  'libxml2',
-  default_options : [
-    'iconv=disabled',
   ],
 )
 subproject('uthash')

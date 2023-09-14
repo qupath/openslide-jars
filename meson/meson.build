@@ -73,6 +73,7 @@ subproject(
     'selinux=disabled',
   ],
 )
+subproject('shared-mime-info')
 subproject(
   'gdk-pixbuf',
   default_options : [

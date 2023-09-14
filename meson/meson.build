@@ -71,6 +71,7 @@ subproject(
   default_options : [
     'nls=disabled',
     'selinux=disabled',
+    'libmount=disabled'
   ],
 )
 subproject(

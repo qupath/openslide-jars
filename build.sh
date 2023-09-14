@@ -220,6 +220,7 @@ override_remove() {
 }
 
 build() {
+    echo "Setting up..."
     if [ ! -f "${build}/compile_commands.json" ]; then
         # If the build directory exists, setup didn't complete last time,
         # and will fail again unless we delete the directory.
@@ -231,19 +232,19 @@ build() {
             meson setup \
                 --buildtype plain \
                 --native-file "meson/native-${os}-${build_arch}.ini" \
-                --wrap-mode nofallback \
                 "$build" meson \
                 ${ver_suffix:+-Dversion_suffix=${ver_suffix}} \
                 ${openslide_werror:+-Dopenslide:werror=true}
+                # --wrap-mode nofallback \
         else
             echo "Running cross build..."
             meson setup \
                 --buildtype plain \
                 --cross-file "meson/cross-${os}-${build_arch}.ini" \
-                --wrap-mode nofallback \
                 "$build" meson \
                 ${ver_suffix:+-Dversion_suffix=${ver_suffix}} \
                 ${openslide_werror:+-Dopenslide:werror=true}
+                # --wrap-mode nofallback \
         fi
     fi
     meson compile -C "$build" $parallel

@@ -197,7 +197,7 @@ jobs:
               werror="-w"
           fi
           ./build.sh ${suffix:+-s$suffix} \
-              $werror -n -m "${{ matrix.os }}-${{ matrix.arch }}" -p "${{ inputs.pkgver }}" bdist
+              $werror -m "${{ matrix.os }}-${{ matrix.arch }}" -p "${{ inputs.pkgver }}" bdist
           mkdir -p "artifacts/${{ needs.sdist.outputs.artifact }}"
           mv "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.tar.gz" \
               "artifacts/${{ needs.sdist.outputs.artifact }}"

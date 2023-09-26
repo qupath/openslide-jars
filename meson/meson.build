@@ -41,8 +41,8 @@ subproject(
   ],
 )
 subproject('libtiff', default_options: [
-  'webp=disabled',
-  'lzma=disabled',
+  'webp=disabled', # all for arm64 mac I think...
+  'lzma=disabled', 
   'zstd=disabled',
 ])
 subproject(

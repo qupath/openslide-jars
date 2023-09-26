@@ -74,7 +74,7 @@ subproject(
     'iconv=disabled',
   ],
 )
-if host_machine.system() == 'windows'
+if host_machine.system() != 'linux'
   subproject(
     'glib',
     default_options : [

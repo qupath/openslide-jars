@@ -72,6 +72,7 @@ subproject(
   'libxml2',
   default_options : [
     'iconv=disabled',
+    'lzma=disabled',
   ],
 )
 if host_machine.system() != 'linux'

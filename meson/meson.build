@@ -30,14 +30,14 @@ if host_machine.system() == 'windows'
     ],
   )
 endif
-subproject(
-  'pcre2',
-  default_options : [
-    'grep=false',
-    'test=false',
-    'jit_sealloc=disabled',# arm64 mac
-  ],
-)
+# subproject(
+#   'pcre2',
+#   default_options : [
+#     'grep=false',
+#     'test=false',
+#     'jit_sealloc=disabled',# arm64 mac
+#   ],
+# )
 subproject('zlib')
 subproject('libpng')
 subproject(

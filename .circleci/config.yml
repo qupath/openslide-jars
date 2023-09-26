@@ -9,6 +9,15 @@ jobs:
       - run: git clone git@github.com:openslide/openslide.git override/openslide
       - run: brew install meson ninja gawk flock glib shared-mime-info
       - run: ./build.sh -mmac-arm64 -p main bdist
+      - run: |
+          pushd openslide-mac-arm64-main 
+          echo "otool -L lib/libopenslide.dylib"
+          otool -L lib/libopenslide.dylib
+          echo "otool -hv lib/libopenslide.dylib"
+          otool -hv lib/libopenslide.dylib
+          popd
+          echo "ls -lah mac/arm64/root/lib/"
+          ls -lah mac/arm64/root/lib/
       - store_artifacts:
           path: openslide-mac-arm64-main.tar.gz
 

@@ -209,11 +209,7 @@ jobs:
           pushd "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}" 
           echo "otool -L lib/libopenslide.dylib"
           otool -L lib/libopenslide.dylib
-          echo "otool -hv lib/libopenslide.dylib"
-          otool -hv lib/libopenslide.dylib
           popd
-          echo "ls -lah mac/x86_64/root/lib/"
-          ls -lah mac/x86_64/root/lib/
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:

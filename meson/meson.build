@@ -30,14 +30,16 @@ if host_machine.system() == 'windows'
     ],
   )
 endif
-# subproject(
-#   'pcre2',
-#   default_options : [
-#     'grep=false',
-#     'test=false',
-#     'jit_sealloc=disabled',# arm64 mac
-#   ],
-# )
+if host_machine.system() == 'darwin'
+  subproject(
+    'pcre2',
+    default_options : [
+      'grep=false',
+      'test=false',
+      'jit_sealloc=disabled',# arm64 darwin
+    ],
+  )
+endif
 subproject('zlib')
 subproject('libpng')
 subproject(
@@ -49,7 +51,7 @@ subproject(
   ],
 )
 subproject('libtiff', default_options: [
-  'webp=disabled', # all for arm64 mac I think...
+  'webp=disabled', # all for arm64 darwin I think...
   'lzma=disabled', 
   'zstd=disabled',
 ])

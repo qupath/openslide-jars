@@ -1,5 +1,5 @@
 diff --git a/meson.build b/meson.build
-index a490071a..cae664ad 100644
+index a490071a..e462d4bb 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -117,10 +117,12 @@ if thread_dep.found()
@@ -10,7 +10,7 @@ index a490071a..cae664ad 100644
 -if lzma_dep.found()
 -  cdata.set('HAVE_LIBLZMA', 1)
 -  deps += lzma_dep
-+if get_option('lzma')
++if get_option('lzma').enabled()
 +  lzma_dep = dependency('liblzma', required: false)
 +  if lzma_dep.found()
 +    cdata.set('HAVE_LIBLZMA', 1)
@@ -24,7 +24,7 @@ index a490071a..cae664ad 100644
  
  withcdata = configuration_data()
 -withcdata.set10('HAVE_LIBLZMA', lzma_dep.found())
-+if get_option('lzma')
++if get_option('lzma').enabled()
 +  withcdata.set10('HAVE_LIBLZMA', lzma_dep.found())
 +endif
  version = meson.project_version()
@@ -35,7 +35,7 @@ index a490071a..cae664ad 100644
  
  withcdata.set10('WITH_ZLIB', zlib_dep.found())
 -withcdata.set10('WITH_LZMA', lzma_dep.found())
-+if get_option('lzma')
++if get_option('lzma').enabled()
 +  withcdata.set10('WITH_LZMA', lzma_dep.found())
 +endif
  

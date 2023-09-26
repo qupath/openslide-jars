@@ -199,6 +199,10 @@ jobs:
           ./build.sh ${suffix:+-s$suffix} \
               $werror -m "${{ matrix.os }}-${{ matrix.arch }}" -p "${{ inputs.pkgver }}" bdist
           mkdir -p "artifacts/${{ needs.sdist.outputs.artifact }}"
+          mv "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.tar.gz" \
+              "artifacts/${{ needs.sdist.outputs.artifact }}"
+      - name: Debugging stuff
+        run: |
           pushd "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}" 
           echo "otool -L lib/libopenslide.dylib"
           otool -L lib/libopenslide.dylib
@@ -209,8 +213,6 @@ jobs:
           ls -lah mac/x86_64/root/bin/
           echo "ls -lah mac/x86_64/root/lib/"
           ls -lah mac/x86_64/root/lib/
-          mv "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.tar.gz" \
-              "artifacts/${{ needs.sdist.outputs.artifact }}"
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:

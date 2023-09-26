@@ -66,7 +66,7 @@ subproject(
     'jit_sealloc=disabled',# arm64 mac
   ],
 )
-if host_machine.system() != 'linux'
+if host_machine.system() == 'windows'
   subproject(
     'glib',
     default_options : [

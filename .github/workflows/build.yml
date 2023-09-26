@@ -199,6 +199,10 @@ jobs:
           ./build.sh ${suffix:+-s$suffix} \
               $werror -m "${{ matrix.os }}-${{ matrix.arch }}" -p "${{ inputs.pkgver }}" bdist
           mkdir -p "artifacts/${{ needs.sdist.outputs.artifact }}"
+          pushd "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}" 
+          grep -r libintl
+          otool -L lib/libopenslide.dylib
+          otool -hv lib/libopenslide.dylib
           mv "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.tar.gz" \
               "artifacts/${{ needs.sdist.outputs.artifact }}"
       - name: Upload artifact

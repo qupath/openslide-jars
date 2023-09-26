@@ -30,7 +30,7 @@ if host_machine.system() == 'windows'
     ],
   )
 endif
-if host_machine.system() == 'darwin'
+if host_machine.system() != 'darwin'
   subproject(
     'pcre2',
     default_options : [

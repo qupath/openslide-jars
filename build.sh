@@ -133,7 +133,7 @@ get_packages() {
             echo "zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"
             ;;
         mac)
-            echo "zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"
+            echo "zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"
             ;;
         win)
             echo "ssp winpthreads zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"

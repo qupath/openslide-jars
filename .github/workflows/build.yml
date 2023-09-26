@@ -209,8 +209,6 @@ jobs:
           echo "otool -hv lib/libopenslide.dylib"
           otool -hv lib/libopenslide.dylib
           popd
-          echo "ls -lah mac/x86_64/root/bin/"
-          ls -lah mac/x86_64/root/bin/
           echo "ls -lah mac/x86_64/root/lib/"
           ls -lah mac/x86_64/root/lib/
       - name: Upload artifact

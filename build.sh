@@ -325,6 +325,7 @@ bdist() {
         fi
         for artifact in $(expand ${package}_artifacts)
         do
+            cp -P "${root}/${lib}/*" "${zipdir}/lib/"
             if [ "${artifact}" = slidetool.exe -a \
                     ! -e "${root}/bin/${artifact}" ]; then
                 # Allow missing slidetool.exe until next OpenSlide release

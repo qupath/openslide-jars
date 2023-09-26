@@ -41,7 +41,8 @@ subproject(
   ],
 )
 subproject('libtiff', default_options: [
-  'webp=disabled'
+  'webp=disabled',
+  'lzma=disabled',
 ])
 subproject(
   'libopenjp2',

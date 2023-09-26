@@ -162,6 +162,9 @@ jobs:
           - image: macos-latest
             arch: x86_64
             os: mac
+          - image: macos-latest
+            arch: arm64
+            os: mac
           # - image: macos-latest
           #   arch: arm64
     name: Build (macOS)

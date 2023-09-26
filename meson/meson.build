@@ -66,14 +66,16 @@ subproject(
     'jit_sealloc=disabled',# arm64 mac
   ],
 )
-subproject(
-  'glib',
-  default_options : [
-    'nls=disabled',
-    'selinux=disabled',
-    'libmount=disabled'
-  ],
-)
+if host_machine.system() != 'linux'
+  subproject(
+    'glib',
+    default_options : [
+      'nls=disabled',
+      'selinux=disabled',
+      'libmount=disabled'
+    ],
+  )
+endif
 subproject(
   'libxml2',
   default_options : [

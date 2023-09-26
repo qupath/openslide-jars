@@ -29,6 +29,14 @@ if host_machine.system() == 'windows'
       'default_library=shared',
     ],
   )
+  subproject(
+    'glib',
+    default_options : [
+      'nls=disabled',
+      'selinux=disabled',
+      'libmount=disabled'
+    ],
+  )
 endif
 subproject('zlib')
 subproject('libpng')
@@ -66,16 +74,6 @@ subproject(
     'jit_sealloc=disabled',# arm64 mac
   ],
 )
-if host_machine.system() == 'windows'
-  subproject(
-    'glib',
-    default_options : [
-      'nls=disabled',
-      'selinux=disabled',
-      'libmount=disabled'
-    ],
-  )
-endif
 subproject(
   'libxml2',
   default_options : [

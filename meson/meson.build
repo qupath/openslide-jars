@@ -66,7 +66,7 @@ subproject(
     'jit_sealloc=disabled',# arm64 mac
   ],
 )
-# if host_machine.system() == 'windows'
+if host_machine.system() == 'windows'
   subproject(
     'glib',
     default_options : [
@@ -75,7 +75,7 @@ subproject(
       'libmount=disabled'
     ],
   )
-# endif
+endif
 subproject(
   'libxml2',
   default_options : [

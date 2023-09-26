@@ -29,6 +29,8 @@ if host_machine.system() == 'windows'
       'default_library=shared',
     ],
   )
+endif
+if host_machine.system() != 'linux'
   subproject(
     'glib',
     default_options : [

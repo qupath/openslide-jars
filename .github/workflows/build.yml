@@ -200,9 +200,15 @@ jobs:
               $werror -m "${{ matrix.os }}-${{ matrix.arch }}" -p "${{ inputs.pkgver }}" bdist
           mkdir -p "artifacts/${{ needs.sdist.outputs.artifact }}"
           pushd "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}" 
+          echo "grep -r libintl"
           grep -r libintl
+          echo "find . -name *.dylib"
+          find . -name *.dylib
+          echo "otool -L lib/libopenslide.dylib"
           otool -L lib/libopenslide.dylib
+          echo "otool -hv lib/libopenslide.dylib"
           otool -hv lib/libopenslide.dylib
+          popd
           mv "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.tar.gz" \
               "artifacts/${{ needs.sdist.outputs.artifact }}"
       - name: Upload artifact

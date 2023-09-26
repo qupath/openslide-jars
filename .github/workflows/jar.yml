@@ -5,7 +5,7 @@ jobs:
     name: Package openslide JAR
     strategy:
       matrix:
-        platform: [ macos-latest ]
+        platform: [ ubuntu-latest ]
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
@@ -38,7 +38,6 @@ jobs:
           
           # mac arm
           tar xvf openslide-mac-arm64-main.tar.gz openslide-mac-arm64-main/lib/libopenslide.dylib --strip-components=2
-          otool -l libopenslide.dylib
           mv libopenslide.dylib darwin-aarch64/
           
           # linux
@@ -47,7 +46,6 @@ jobs:
           
           # max x86_64
           tar xvf openslide-mac-x86_64-main.tar.gz openslide-mac-x86_64-main/lib/libopenslide.dylib --strip-components=2
-          otool -l libopenslide.dylib
           mv libopenslide.dylib darwin-x86-64/
 
           # windows

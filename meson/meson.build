@@ -30,16 +30,6 @@ if host_machine.system() == 'windows'
     ],
   )
 endif
-if host_machine.system() != 'linux'
-  subproject(
-    'glib',
-    default_options : [
-      'nls=disabled',
-      'selinux=disabled',
-      'libmount=disabled'
-    ],
-  )
-endif
 subproject('zlib')
 subproject('libpng')
 subproject(
@@ -82,7 +72,16 @@ subproject(
     'iconv=disabled',
   ],
 )
-# subproject('shared-mime-info')
+if host_machine.system() != 'linux'
+  subproject(
+    'glib',
+    default_options : [
+      'nls=disabled',
+      'selinux=disabled',
+      'libmount=disabled'
+    ],
+  )
+endif
 subproject(
   'gdk-pixbuf',
   default_options : [

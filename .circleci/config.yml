@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: git clone git@github.com:openslide/openslide.git override/openslide
       - run: brew install meson ninja gawk flock
-      - run: brew uninstall git pcre2 lzip
+      - run: brew uninstall git pcre2 lzma
       - run: ./build.sh -mmac-arm64 -p main bdist
       - run: |
           pushd openslide-mac-arm64-main 

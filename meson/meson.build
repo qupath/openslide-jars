@@ -51,7 +51,7 @@ subproject(
 subproject('libtiff', default_options: [
   # 'webp=disabled', # all for arm64 darwin I think...
   # 'lzma=disabled', 
-  # 'zstd=disabled',
+  'zstd=disabled',
 ])
 subproject(
   'libopenjp2',

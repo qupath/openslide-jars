@@ -88,11 +88,11 @@ endif
 subproject(
   'gdk-pixbuf',
   default_options : [
-    'png=disabled',
-    'tiff=disabled',
-    'jpeg=disabled',
+    'png=enabled',
+    'tiff=enabled',
+    'jpeg=enabled',
     'man=false',
-    'builtin_loaders=bmp',
+    'builtin_loaders=all',
     'installed_tests=false',
   ],
 )

@@ -151,7 +151,7 @@ meson_wrap_key() {
     # $1 = package shortname
     # $2 = file section
     # $3 = file key
-    grep $3 "meson/subprojects/$(echo $1 | tr _ -).wrap" | sed -e "s/$3 = //"
+    grep "$3 = " "meson/subprojects/$(echo $1 | tr _ -).wrap" | sed -e "s/$3 = //"
 }
 
 meson_wrap_version() {

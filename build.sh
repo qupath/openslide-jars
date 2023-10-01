@@ -149,21 +149,16 @@ expand() {
 
 meson_wrap_key() {
     # $1 = package shortname
-    # $2 = file section
-    # $3 = file key
-    gawk -F ' *= *' \
-            -e 'BEGIN {want_section="'$2'"; want_key="'$3'"}' \
-            -e 'match($0, /^\[([^]]*)\]$/, out) {section=out[1]}' \
-            -e 'section == want_section && $1 == want_key {print $2}' \
-            "meson/subprojects/$(echo $1 | tr _ -).wrap"
+    # $2 = file key
+    grep $2 "meson/subprojects/$1.wrap" | sed -e "s/$2 = //"
 }
 
 meson_wrap_version() {
     # $1 = package shortname
     local ver
-    ver="$(meson_wrap_key $1 wrap-file wrapdb_version)"
+    ver="$(meson_wrap_key $1 wrapdb_version)"
     if [ -z "$ver" ]; then
-        ver="$(meson_wrap_key $1 wrap-file directory | awk -F - '{print $NF}' | sed 's/^v//')"
+        ver="$(meson_wrap_key $1 directory | awk -F - '{print $NF}' | sed 's/^v//')"
     fi
     echo "$ver"
 }
@@ -272,12 +267,12 @@ sdist() {
     for package in $packages
     do
         cp "meson/subprojects/$(echo $package | tr _ -).wrap" "${zipdir}/meson/subprojects/"
-        for file in $(meson_wrap_key $package wrap-file source_filename) \
-                $(meson_wrap_key $package wrap-file patch_filename); do
+        for file in $(meson_wrap_key $package source_filename) \
+                $(meson_wrap_key $package patch_filename); do
             cp "meson/subprojects/packagecache/$file" \
                     "${zipdir}/meson/subprojects/packagecache/"
         done
-        for file in $(meson_wrap_key $package wrap-file diff_files | tr , " "); do
+        for file in $(meson_wrap_key $package diff_files | tr , " "); do
             mkdir -p "${zipdir}/meson/subprojects/packagefiles"
             cp "meson/subprojects/packagefiles/$file" \
                     "${zipdir}/meson/subprojects/packagefiles/"
@@ -321,7 +316,7 @@ bdist() {
         if [ -d "override/${package}" ] ;then
             srcdir="override/${package}"
         else
-            srcdir="meson/subprojects/$(meson_wrap_key ${package} wrap-file directory)"
+            srcdir="meson/subprojects/$(meson_wrap_key ${package} directory)"
         fi
         for artifact in $(expand ${package}_artifacts)
         do

@@ -213,7 +213,7 @@ jobs:
           pushd "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}" 
           echo "otool -L lib/libopenslide.dylib"
           otool -L lib/libopenslide.dylib
-          launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist
+          sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist
           locate libresolv.9.dylib
           locate libiconv.2.dylib
           popd

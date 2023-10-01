@@ -152,9 +152,9 @@ meson_wrap_key() {
     # $2 = file section
     # $3 = file key
     awk -F ' *= *' \
-            -e 'BEGIN {want_section="'$2'"; want_key="'$3'"}' \
-            -e 'match($0, /^\[([^]]*)\]$/, out) {section=out[1]}' \
-            -e 'section == want_section && $1 == want_key {print $2}' \
+            'BEGIN {want_section="'$2'"; want_key="'$3'"}
+            match($0, /^\[([^]]*)\]$/, out) {section=out[1]}
+            section == want_section && $1 == want_key {print $2}'
             "meson/subprojects/$(echo $1 | tr _ -).wrap"
 }
 

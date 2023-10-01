@@ -173,7 +173,7 @@ jobs:
     steps:
       - name: Install homebrew dependencies
         run: |
-          brew install meson ninja gawk flock
+          brew install meson ninja flock
       - name: Download source zip
         uses: actions/download-artifact@v3
         with:

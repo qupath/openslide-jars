@@ -151,7 +151,7 @@ meson_wrap_key() {
     # $1 = package shortname
     # $2 = file section
     # $3 = file key
-    gawk -F ' *= *' \
+    awk -F ' *= *' \
             -e 'BEGIN {want_section="'$2'"; want_key="'$3'"}' \
             -e 'match($0, /^\[([^]]*)\]$/, out) {section=out[1]}' \
             -e 'section == want_section && $1 == want_key {print $2}' \
@@ -163,7 +163,7 @@ meson_wrap_version() {
     local ver
     ver="$(meson_wrap_key $1 wrap-file wrapdb_version)"
     if [ -z "$ver" ]; then
-        ver="$(meson_wrap_key $1 wrap-file directory | gawk -F - '{print $NF}' | sed 's/^v//')"
+        ver="$(meson_wrap_key $1 wrap-file directory | awk -F - '{print $NF}' | sed 's/^v//')"
     fi
     echo "$ver"
 }
@@ -353,7 +353,7 @@ bdist() {
         mkdir -p "${licensedir}"
         if [ "$package" = sqlite3 ]; then
             # Extract public-domain dedication from the top of sqlite3.h
-            gawk '/\*{8}/ {exit} /^\*{2}/ {print}' "${srcdir}/sqlite3.h" > \
+            awk '/\*{8}/ {exit} /^\*{2}/ {print}' "${srcdir}/sqlite3.h" > \
                     "${srcdir}/PUBLIC-DOMAIN.txt"
         fi
         for artifact in $(expand ${package}_licenses)

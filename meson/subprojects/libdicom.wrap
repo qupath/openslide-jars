@@ -7,6 +7,6 @@ url = https://github.com/jcupitt/libdicom.git
 revision = 2632133fd49a9ca6df7141b1b09b3f1094ff21a9
 depth = 1
 
-# this is needed by meson_wrap_key() to get the directory we clone to
+# this is needed by meson_wrap_key() to get the dir we clone to
 [wrap-file]
 directory = libdicom

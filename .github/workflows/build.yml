@@ -195,7 +195,7 @@ jobs:
       - name: Remove homebrew dependencies
         shell: bash
         run: |
-          brew uninstall git pcre2 xz gettext --ignore-dependencies
+          brew uninstall git pcre2 xz gettext zstd webp libiconv fontconfig freetype --ignore-dependencies
       - name: Build binary zip
         run: |
           suffix="${{ needs.sdist.outputs.version_suffix }}"

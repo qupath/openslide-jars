@@ -143,8 +143,8 @@ jobs:
             os: mac
             platform: macos-latest
             container:
-    runs-on: matrix.platform
-    container: matrix.container
+    runs-on: ${{ matrix.platform }}
+    container: ${{ matrix.container }}
     steps:
       - name: Install homebrew dependencies
         if: matrix.platform == 'macos-latest'

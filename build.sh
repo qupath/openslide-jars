@@ -522,10 +522,7 @@ probe() {
             done
             ;;
     esac
-    if [ ! -e /etc/openslide-winbuild-builder-v1 ]; then
-        echo "Must run inside the builder container.  See README.md."
-        exit 1
-    fi
+
 
     build="${build_bits}/build"
     root="$(pwd)/${build_bits}/root"

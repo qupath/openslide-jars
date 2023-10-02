@@ -122,7 +122,7 @@ jobs:
           path: artifacts
 
   bdist:
-    name: Build (Windows/Linux)
+    name: Build
     needs: sdist
     strategy:
       matrix:
@@ -238,7 +238,7 @@ jobs:
           tar xf "${{ needs.sdist.outputs.artifact }}/openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.tar.gz"
       - name: Report package versions
         shell: bash
-        run: cat "openslide-win32-${{ inputs.pkgver }}/VERSIONS.md" >> $GITHUB_STEP_SUMMARY
+        run: cat "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}/VERSIONS.md" >> $GITHUB_STEP_SUMMARY
       - name: Smoke test
         shell: bash
         run: |

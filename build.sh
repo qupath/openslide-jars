@@ -523,11 +523,10 @@ probe() {
             ;;
     esac
 
+    build="${os}/${build_arch}/build"
+    root="$(pwd)/${os}/${build_arch}/root"
 
-    build="${build_bits}/build"
-    root="$(pwd)/${build_bits}/root"
-
-    cross_file="meson/cross-win${build_bits}.ini"
+    cross_file="meson/cross-${os}-${build_arch}.ini"
     cc=$(meson_config_key "${cross_file}" binaries c | tr -d "'")
     ld=$(meson_config_key "${cross_file}" binaries ld | tr -d "'")
     objcopy=$(meson_config_key "${cross_file}" binaries objcopy | tr -d "'")

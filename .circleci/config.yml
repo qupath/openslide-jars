@@ -11,6 +11,7 @@ jobs:
       - run: brew uninstall git pcre2 xz --ignore-dependencies
       - run: ./build.sh -mmac-arm64 -p main bdist
       - run: |
+          ls -lah
           pushd openslide-mac-arm64-main 
           echo "otool -L lib/libopenslide.dylib"
           otool -L lib/libopenslide.dylib

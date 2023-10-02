@@ -5,12 +5,25 @@ name: Build
 on:
   workflow_call:
     inputs:
+      builder_repo_and_digest:
+        # Use .github/find-container-digest action to get this
+        description: Docker repo and image digest of the builder container
+        required: true
+        type: string
       openslide_repo:
         description: Override OpenSlide with this repo
         required: false
         type: string
       openslide_ref:
         description: Override OpenSlide with this openslide_repo ref
+        required: false
+        type: string
+      openslide_java_repo:
+        description: Override OpenSlide Java with this repo
+        required: false
+        type: string
+      openslide_java_ref:
+        description: Override OpenSlide Java with this openslide_java_repo ref
         required: false
         type: string
       openslide_winbuild_repo:
@@ -45,24 +58,32 @@ jobs:
   sdist:
     name: Build source zip
     runs-on: ubuntu-latest
-    container: ghcr.io/alanocallaghan/winbuild-builder:latest
+    container: ${{ inputs.builder_repo_and_digest }}
     outputs:
       artifact: ${{ steps.prep.outputs.artifact }}
       version_suffix: ${{ steps.prep.outputs.version_suffix }}
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ inputs.openslide_winbuild_repo }}
           ref: ${{ inputs.openslide_winbuild_ref }}
 
       - name: Check out OpenSlide
         if: inputs.openslide_repo != ''
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ inputs.openslide_repo }}
           ref: ${{ inputs.openslide_ref }}
           path: override/openslide
+          persist-credentials: false
+      - name: Check out OpenSlide Java
+        if: inputs.openslide_java_repo != ''
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.openslide_java_repo }}
+          ref: ${{ inputs.openslide_java_ref }}
+          path: override/openslide_java
           persist-credentials: false
       - name: Collect overrides
         if: inputs.openslide_repo != ''
@@ -101,6 +122,8 @@ jobs:
           path: artifacts
 
   bdist:
+    name: Build (Windows/Linux)
+    needs: sdist
     strategy:
       matrix:
         include:
@@ -120,8 +143,6 @@ jobs:
             os: mac
             platform: macos-latest
             container:
-    name: Build (Windows/Linux)
-    needs: sdist
     runs-on: matrix.platform
     container: matrix.container
     steps:
@@ -140,12 +161,12 @@ jobs:
           mv "${{ needs.sdist.outputs.artifact }}/openslide-build-${{ inputs.pkgver }}"/* .
           rm -r "${{ needs.sdist.outputs.artifact }}"
       - name: Download overrides
-        if: inputs.openslide_repo != ''
+        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
         uses: actions/download-artifact@v3
         with:
           name: build-overrides
       - name: Unpack overrides
-        if: inputs.openslide_repo != ''
+        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
         run: tar xf overrides.tar
       - name: Remove homebrew dependencies
         if: matrix.platform == 'macos-latest'
@@ -215,6 +236,9 @@ jobs:
         shell: bash
         run: |
           tar xf "${{ needs.sdist.outputs.artifact }}/openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.tar.gz"
+      - name: Report package versions
+        shell: bash
+        run: cat "openslide-win32-${{ inputs.pkgver }}/VERSIONS.md" >> $GITHUB_STEP_SUMMARY
       - name: Smoke test
         shell: bash
         run: |

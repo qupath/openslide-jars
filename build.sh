@@ -22,8 +22,6 @@
 set -eE
 
 # Package display names
-ssp_name="libssp"
-winpthreads_name="winpthreads"
 zlib_name="zlib"
 libpng_name="libpng"
 libjpeg_turbo_name="libjpeg-turbo"
@@ -43,8 +41,6 @@ libdicom_name="libdicom"
 openslide_name="OpenSlide"
 
 # Locations of license files within the source tree
-ssp_licenses="COPYING3 COPYING.RUNTIME"
-winpthreads_licenses="mingw-w64-libraries/winpthreads/COPYING"
 zlib_licenses="README"
 libpng_licenses="LICENSE"
 libjpeg_turbo_licenses="LICENSE.md README.ijg simd/nasm/jsimdext.inc" # !!!
@@ -66,8 +62,6 @@ openslide_licenses="LICENSE.txt lgpl-2.1.txt COPYING.LESSER"
 
 
 # Update-checking URLs
-ssp_upurl="https://mirrors.concertpass.com/gcc/releases/"
-winpthreads_upurl="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/"
 zlib_upurl="https://zlib.net/"
 libpng_upurl="http://www.libpng.org/pub/png/libpng.html"
 libjpeg_turbo_upurl="https://sourceforge.net/projects/libjpeg-turbo/files/"
@@ -87,8 +81,6 @@ libdicom_upurl="https://github.com/ImagingDataCommons/libdicom/tags"
 openslide_upurl="https://github.com/openslide/openslide/tags"
 
 # Update-checking regexes
-ssp_upregex="gcc-([0-9.]+)/"
-winpthreads_upregex="mingw-w64-v([0-9.]+)\.zip"
 zlib_upregex="source code, version ([0-9.]+)"
 libpng_upregex="libpng-([0-9.]+)-README.txt"
 libjpeg_turbo_upregex="files/([0-9.]+)/"
@@ -147,11 +139,18 @@ expand() {
     echo "${!1}"
 }
 
+meson_config_key() {
+    # $1 = keyfile
+    # $2 = file section
+    # $3 = file key
+    grep "$3 = " "$1" | sed -e "s/$3 = //"
+}
+
 meson_wrap_key() {
     # $1 = package shortname
     # $2 = file section
     # $3 = file key
-    grep "$3 = " "meson/subprojects/$(echo $1 | tr _ -).wrap" | sed -e "s/$3 = //"
+    meson_config_key "meson/subprojects/$(echo $1 | tr _ -).wrap" "$2" "$3"
 }
 
 meson_wrap_version() {
@@ -279,8 +278,10 @@ sdist() {
                     "${zipdir}/meson/subprojects/packagefiles/"
         done
     done
-    mkdir -p "${zipdir}/meson/include"
-    cp build.sh Dockerfile.builder README.md COPYING.LESSER "${zipdir}/"
+    mkdir -p "${zipdir}/builder" "${zipdir}/meson/include"
+    cp build.sh README.md COPYING.LESSER "${zipdir}/"
+    cp builder/Dockerfile builder/package.accept_keywords builder/package.use \
+            builder/repos.conf "${zipdir}/builder/"
     cp meson/cross-* meson/native-* meson/meson.build meson/meson_options.txt "${zipdir}/meson/"
     cp meson/include/setjmp.h "${zipdir}/meson/include/"
     rm -f "${zipdir}.zip"
@@ -288,9 +289,17 @@ sdist() {
     rm -rf "${zipdir}"
 }
 
+log_version() {
+    # $1 = zipdir
+    # $2 = package
+    # $3 = version
+    printf "| %-20s | %-53s |\n" "$2" "$3" >> "$1/VERSIONS.md"
+}
+
 bdist() {
     # Build binary distribution
-    local package name srcdir licensedir zipdir prev_ver_suffix
+    local package name version srcdir licensedir zipdir prev_ver_suffix input
+    local symbols
 
     # Rebuild OpenSlide if suffix changed
     prev_ver_suffix="$(cat ${os}/${build_arch}/.suffix 2>/dev/null ||:)"
@@ -312,7 +321,18 @@ bdist() {
     zipdir="openslide-${os}-${build_arch}-${pkgver}"
     rm -rf "${zipdir}"
     mkdir -p "${zipdir}/bin" "${zipdir}/lib"
-    for package in $(get_packages "${os}")
+    log_version "${zipdir}" "Software" "Version"
+    log_version "${zipdir}" "--------" "-------"
+    for package in $packages
+    do
+        case "${package}" in
+        openslide|openslide_java)
+            log_version "${zipdir}" "**$(expand ${package}_name)**" \
+                    "**$(meson_wrap_version ${package})**"
+            ;;
+        esac
+    done
+    for package in $packages
     do
         if [ -d "override/${package}" ] ;then
             srcdir="override/${package}"
@@ -329,11 +349,11 @@ bdist() {
             if [ "${artifact}" != "${artifact%.dll}" -o \
                     "${artifact}" != "${artifact%.exe}" ] ; then
                 echo "Stripping ${artifact}..."
-                ${build_host}-objcopy --only-keep-debug \
+                ${objcopy} --only-keep-debug \
                         "${root}/bin/${artifact}" \
                         "${zipdir}/bin/${artifact}.debug"
                 chmod -x "${zipdir}/bin/${artifact}.debug"
-                ${build_host}-objcopy -S \
+                ${objcopy} -S \
                         --add-gnu-debuglink="${zipdir}/bin/${artifact}.debug" \
                         "${root}/bin/${artifact}" \
                         "${zipdir}/bin/${artifact}"
@@ -364,6 +384,22 @@ bdist() {
             fi
         done
         if [ "$package" = openslide ]; then
+            # check for extra symbol exports
+            symbols=$(${objdump} -p "${root}"/bin/libopenslide-*.dll | \
+                    awk -v t=0 \
+                        -e '/Ordinal\/Name Pointer/ {t = 1; next}' \
+                        -e 't == 0 {next}' \
+                        -e '/^$/ {exit}' \
+                        -e '{print $3}')
+            if [ -z "${symbols}" ]; then
+                echo "Couldn't find symbols in OpenSlide DLL"
+                exit 1
+            fi
+            if symbols=$(grep -v ^openslide_ <<<"${symbols}"); then
+                echo -e "\nUnexpected exports:\n${symbols}"
+                exit 1
+            fi
+
             mkdir -p "${zipdir}/lib"
             if [ "$os" = "win" ]; then
                 cp "${root}/lib/libopenslide.dll.a" "${zipdir}/lib/libopenslide.lib"
@@ -379,20 +415,35 @@ bdist() {
                 # If slidetool is present, drop the redundant legacy programs
                 rm "${zipdir}/bin/openslide-"*".exe"*
             fi
+        elif [ "$package" != openslide_java ]; then
+            log_version "${zipdir}" "$(expand ${package}_name)" \
+                    "$(meson_wrap_version ${package})"
         fi
-        printf "%-30s %s\n" "$(expand ${package}_name)" \
-                "$(meson_wrap_version ${package})" >> "${zipdir}/VERSIONS.txt"
     done
+    rm -f "${zipdir}.zip" "${zipdir}.tar.gz"
+    log_version "${zipdir}" "_MinGW-w64_" "_${version}_"
+    log_version "${zipdir}" "_GCC_" \
+            "_$(${cc} --version | sed -e 's/.*(/(/' -e q)_"
+    log_version "${zipdir}" "_Binutils_" \
+            "_$(${ld} --version | sed -e 's/.*version //' -e q)_"
     rm -f "${zipdir}.zip" "${zipdir}.tar.gz"
     case "$os" in
         win)
             zip -r "${zipdir}.zip" "${zipdir}"
+            read -d "" input <<EOF ||:
+#include <_mingw_mac.h>
+#define s(v) #v
+#define ss(v) s(v)
+version=ss(__MINGW64_VERSION_MAJOR).ss(__MINGW64_VERSION_MINOR).ss(__MINGW64_VERSION_BUGFIX)
+EOF
+            eval "$(${cc} -E - <<<${input})"
             ;;
         *)
             tar -cvzf "${zipdir}.tar.gz" "${zipdir}"
             ;;
     esac
-    # rm -rf "${zipdir}"
+    zip -r "${zipdir}.zip" "${zipdir}"
+    rm -r "${zipdir}"
 }
 
 clean() {
@@ -471,7 +522,19 @@ probe() {
             done
             ;;
     esac
+    if [ ! -e /etc/openslide-winbuild-builder-v1 ]; then
+        echo "Must run inside the builder container.  See README.md."
+        exit 1
+    fi
 
+    build="${build_bits}/build"
+    root="$(pwd)/${build_bits}/root"
+
+    cross_file="meson/cross-win${build_bits}.ini"
+    cc=$(meson_config_key "${cross_file}" binaries c | tr -d "'")
+    ld=$(meson_config_key "${cross_file}" binaries ld | tr -d "'")
+    objcopy=$(meson_config_key "${cross_file}" binaries objcopy | tr -d "'")
+    objdump=$(meson_config_key "${cross_file}" binaries objdump | tr -d "'")
 }
 
 fail_handler() {
@@ -525,9 +588,6 @@ done
 shift $(( $OPTIND - 1 ))
 
 
-# Probe build environment
-probe
-
 # Clean up any prior Meson overrides, since various subcommands want to
 # read wrap files
 (
@@ -538,12 +598,15 @@ probe
 # Process command-line arguments
 case "$1" in
 sdist)
+    probe
     sdist
     ;;
 bdist)
+    probe
     bdist
     ;;
 clean)
+    probe
     shift
     clean "$@"
     ;;

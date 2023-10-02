@@ -1,0 +1,52 @@
+# PR CI workflow for openslide-winbuild
+
+name: Build
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    name: Set up
+    runs-on: ubuntu-latest
+    outputs:
+      builder_repo_and_digest: ${{ steps.find.outputs.builder_repo_and_digest }}
+      pkgver: ${{ steps.params.outputs.pkgver }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Find builder container digest
+        id: find
+        uses: ./.github/find-container-digest
+      - name: Calculate parameters
+        id: params
+        run: echo "pkgver=pr-${{ github.event.number }}.${{ github.run_number }}.${{ github.run_attempt }}-$(echo ${{ github.sha }} | cut -c-7)" >> $GITHUB_OUTPUT
+
+  stable:
+    name: Stable
+    needs: setup
+    uses: ./.github/workflows/windows.yml
+    with:
+      builder_repo_and_digest: ${{ needs.setup.outputs.builder_repo_and_digest }}
+      openslide_winbuild_repo: ${{ github.repository }}
+      openslide_winbuild_ref: ${{ github.ref }}
+      pkgver: ${{ needs.setup.outputs.pkgver }}-stable
+
+  git:
+    name: Git
+    needs: setup
+    uses: ./.github/workflows/windows.yml
+    with:
+      builder_repo_and_digest: ${{ needs.setup.outputs.builder_repo_and_digest }}
+      openslide_repo: openslide/openslide
+      openslide_ref: main
+      openslide_java_repo: openslide/openslide-java
+      openslide_java_ref: main
+      openslide_winbuild_repo: ${{ github.repository }}
+      openslide_winbuild_ref: ${{ github.ref }}
+      pkgver: ${{ needs.setup.outputs.pkgver }}-git
+      werror: true

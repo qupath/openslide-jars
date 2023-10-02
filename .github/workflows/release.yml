@@ -1,0 +1,60 @@
+# Automatically create a release when tagged
+
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+concurrency: release-${{ github.ref }}
+
+jobs:
+  setup:
+    name: Set up
+    runs-on: ubuntu-latest
+    outputs:
+      builder_repo_and_digest: ${{ steps.find.outputs.builder_repo_and_digest }}
+      pkgver: ${{ steps.params.outputs.pkgver }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Find builder container digest
+        id: find
+        uses: ./.github/find-container-digest
+      - name: Calculate parameters
+        id: params
+        run: echo "pkgver=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+  stable:
+    name: Stable
+    needs: setup
+    uses: ./.github/workflows/windows.yml
+    with:
+      builder_repo_and_digest: ${{ needs.setup.outputs.builder_repo_and_digest }}
+      openslide_winbuild_repo: ${{ github.repository }}
+      openslide_winbuild_ref: ${{ github.ref }}
+      pkgver: ${{ needs.setup.outputs.pkgver }}
+
+  release:
+    name: Release
+    needs: [setup, stable]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ needs.stable.outputs.artifact }}
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          unzip "${{ needs.stable.outputs.artifact }}/openslide-win32-${{ needs.setup.outputs.pkgver }}.zip"
+          gh release create --latest --verify-tag \
+              --repo "${{ github.repository }}" \
+              --title "Windows build ${{ needs.setup.outputs.pkgver }}" \
+              --notes-file "openslide-win32-${{ needs.setup.outputs.pkgver }}/VERSIONS.md" \
+              "${{ github.ref_name }}" \
+              "${{ needs.stable.outputs.artifact }}/"*

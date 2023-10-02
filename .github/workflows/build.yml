@@ -233,7 +233,7 @@ jobs:
             os: mac
     runs-on: ${{ matrix.image }}
     name: Smoke test
-    needs: [sdist, bdist-mac] # bdist
+    needs: [sdist, bdist, bdist-mac]
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3

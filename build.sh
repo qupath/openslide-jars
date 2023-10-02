@@ -441,7 +441,7 @@ EOF
             ;;
     esac
     zip -r "${zipdir}.zip" "${zipdir}"
-    rm -r "${zipdir}"
+    # rm -r "${zipdir}"
 }
 
 clean() {

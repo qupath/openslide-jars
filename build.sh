@@ -106,8 +106,6 @@ wget="wget -q"
 get_artifacts() {
     case "$os" in
         win)
-            ssp_artifacts="libssp-0.dll"
-            winpthreads_artifacts="libwinpthread-1.dll"
             openslide_artifacts="libopenslide-0.dll openslide-quickhash1sum.exe openslide-show-properties.exe openslide-write-png.exe slidetool.exe"
             ;;
         linux)
@@ -128,7 +126,7 @@ get_packages() {
             echo "zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"
             ;;
         win)
-            echo "ssp winpthreads zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"
+            echo "zlib libpng libjpeg_turbo libtiff libopenjp2 sqlite3 proxy_libintl libffi pcre2 glib gdk_pixbuf pixman cairo libxml2 uthash libdicom openslide"
             ;;
     esac
 }

@@ -13,23 +13,6 @@ add_global_arguments(
   language: ['c', 'cpp']
 )
 
-if host_machine.system() == 'windows'
-  # On Fedora the MinGW CRT is built with _FORTIFY_SOURCE so we need to ship
-  # libssp.  After recent MinGW runtime changes land, this should no longer be
-  # necessary.
-  subproject(
-    'ssp',
-    default_options : [
-      'default_library=shared',
-    ],
-  )
-  subproject(
-    'winpthreads',
-    default_options : [
-      'default_library=shared',
-    ],
-  )
-endif
 subproject(
   'pcre2',
   default_options : [

@@ -381,7 +381,7 @@ bdist() {
                 fi
             fi
         done
-        if [ "$package" = openslide ]; then
+        if [ "$package" = openslide && "$os" = win ]; then
             # check for extra symbol exports
             symbols=$(${objdump} -p "${root}"/bin/libopenslide-*.dll | \
                     awk -v t=0 \

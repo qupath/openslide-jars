@@ -1,7 +1,13 @@
-# openslide-winbuild
+# openslide-crossplatform-build
 
-This is a set of scripts for building OpenSlide for Windows, including all
-of its dependencies, using MinGW-w64.
+This is a set of scripts for building OpenSlide for Windows, Mac, Linux (x86_64)
+and Mac (aarch64) including all of its dependencies.
+
+It's based on [openslide-winbuild](https://github.com/openslide/openslide-winbuild/);
+the fork relationship has been severed to indicate that the openslide team
+has no responsibility for builds derived from this repo.
+
+Currently, we provide binaries of the bleeding edge OpenSlide main.
 
 ## Building
 

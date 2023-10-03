@@ -289,7 +289,7 @@ jobs:
         shell: bash
         run: |
           ./circleci-download-latest.rb -u alanocallaghan -r openslide-crossplatform-builds -b main
-          mv openslide-mac-arm64-main.tar.gz openslide-build-main/openslide-build-main/
+          mv openslide-mac-arm64-main.tar.gz openslide-build-main/
       - name: Unpack and organise natives
         shell: bash
         run: |

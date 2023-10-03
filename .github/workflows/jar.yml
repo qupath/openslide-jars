@@ -40,23 +40,19 @@ jobs:
           tar xvf openslide-mac-arm64-main.tar.gz openslide-mac-arm64-main/lib/libopenslide.dylib --strip-components=2
           tar xvf openslide-mac-arm64-main.tar.gz openslide-mac-arm64-main/licenses --strip-components=1
           mv libopenslide.dylib darwin-aarch64/
-          cp -r licenses darwin-aarch64/
           
           # linux
           tar xvf openslide-linux-x86_64-main.tar.gz openslide-linux-x86_64-main/lib/libopenslide.so.0.4.1 --strip-components=2
           mv libopenslide.so.0.4.1 linux-x86-64/libopenslide.so
-          cp -r licenses linux-x86-64/
           
           # max x86_64
           tar xvf openslide-mac-x86_64-main.tar.gz openslide-mac-x86_64-main/lib/libopenslide.dylib --strip-components=2
           mv libopenslide.dylib darwin-x86-64/
-          cp -r licenses darwin-x86-64/
 
           # windows
           unzip -p openslide-win-x86_64-main.zip openslide-win-x86_64-main/bin/libopenslide-0.dll > openslide.dll
           chmod 755 openslide.dll
           mv openslide.dll win32-x86-64/
-          cp -r licenses win32-x86-64/
 
           unzip openslide-build-main.zip
           mv openslide-build-main openslide-sources
@@ -64,10 +60,10 @@ jobs:
       - name: Make jar
         shell: bash
         run: |
-          jar cvf openslide-natives-darwin-aarch64.jar darwin-aarch64
-          jar cvf openslide-natives-darwin-x86-64.jar darwin-x86-64
-          jar cvf openslide-natives-linux-x86-64.jar linux-x86-64
-          jar cvf openslide-natives-win32-x86-64.jar win32-x86-64
+          jar cvf openslide-natives-darwin-aarch64.jar darwin-aarch64 licenses
+          jar cvf openslide-natives-darwin-x86-64.jar darwin-x86-64 licenses
+          jar cvf openslide-natives-linux-x86-64.jar linux-x86-64 licenses
+          jar cvf openslide-natives-win32-x86-64.jar win32-x86-64 licenses
           mkdir -p openslide-natives
           mv *.jar openslide-natives
       - name: Upload jar

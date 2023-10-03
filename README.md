@@ -9,6 +9,9 @@ has no responsibility for builds derived from this repo.
 
 Currently, we provide binaries of the bleeding edge OpenSlide main.
 
+We expect this repository to be deprecated in the future, when cross-platform
+binaries for openslide become available from official sources.
+
 ## Building
 
 The `builder` directory defines a container image with the dependencies

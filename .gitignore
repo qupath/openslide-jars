@@ -18,3 +18,5 @@ meson/subprojects/gvdb.wrap
 *local
 openslide-*
 .gradle
+build
+tmp

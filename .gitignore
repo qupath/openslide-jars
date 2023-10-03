@@ -17,3 +17,5 @@ meson/subprojects/gvdb.wrap
 *.tar.gz
 *local
 openslide-*
+.gradle
+buildSrc/

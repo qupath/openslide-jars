@@ -48,9 +48,14 @@ These must be specified before the subcommand.
 
 Parallel build with the specified parallelism.
 
-#### `-m{32|64}`
+#### `-n`
 
-Select 32-bit or 64-bit build (default: 32).
+Perform native build instead of a cross build (default: cross). Mainly useful for
+building mac binaries natively e.g. on a github action runner.
+
+#### `-m{win-i686|win-x86_64|linux-x86_64|mac-x86_64}`
+
+Select architecture to target, currently i686 (x86 32-bit) or x86_64 (x86 64-bit) build (default: i686).
 
 #### `-p<pkgver>`
 

@@ -1,4 +1,11 @@
-on: push
+name: Build jar
+
+on: 
+  workflow_call:
+    outputs:
+      artifact:
+        description: The name of the output artifact
+        value: openslide-natives
 
 jobs:
   check:

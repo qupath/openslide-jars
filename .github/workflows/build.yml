@@ -293,7 +293,7 @@ jobs:
       - name: Unpack and organise natives
         shell: bash
         run: |
-          mv openslide-build-main/openslide-build-main/* ./
+          mv openslide-build-main/* ./
           mkdir -p darwin-aarch64 darwin-x86-64 linux-x86-64 win32-x86-64
           
           # mac arm

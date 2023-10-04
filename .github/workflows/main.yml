@@ -4,8 +4,10 @@
 name: Build main
 
 on:
-  push:
-    # branches: [main]
+  workflow_dispatch:
+# on:
+#   push:
+#     branches: [main]
 
 permissions:
   contents: read

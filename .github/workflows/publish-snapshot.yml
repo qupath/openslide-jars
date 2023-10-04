@@ -25,10 +25,14 @@ jobs:
         workflow: main.yml
         name: openslide-natives
         name_is_regexp: true
-    - name: Publish snapshot
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: publish
-      env:
-        MAVEN_USER: ${{ secrets.MAVEN_USER }}
-        MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
+    - name: Debug
+      run: |
+        ls -lah
+        ls -lah openslide-natives/
+    # - name: Publish snapshot
+    #   uses: gradle/gradle-build-action@v2
+    #   with:
+    #     arguments: publish
+    #   env:
+    #     MAVEN_USER: ${{ secrets.MAVEN_USER }}
+    #     MAVEN_PASS: ${{ secrets.MAVEN_PASS }}

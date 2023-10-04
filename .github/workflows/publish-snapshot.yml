@@ -21,8 +21,8 @@ jobs:
       id: download-artifact
       uses: dawidd6/action-download-artifact@v2
       with: 
-        repo: alanocallaghan/openslide-crossplatform-builds
-        workflow: jar.yml
+        repo: qupath/openslide-crossplatform-builds
+        workflow: main.yml
         name: openslide-natives
         name_is_regexp: true
     - name: Publish snapshot

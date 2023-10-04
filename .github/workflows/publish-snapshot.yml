@@ -25,14 +25,13 @@ jobs:
         workflow: main.yml
         name: openslide-natives
         name_is_regexp: true
-    - name: Debug
+    - name: Move files
       run: |
-        ls -lah
-        ls -lah openslide-natives/
-    # - name: Publish snapshot
-    #   uses: gradle/gradle-build-action@v2
-    #   with:
-    #     arguments: publish
-    #   env:
-    #     MAVEN_USER: ${{ secrets.MAVEN_USER }}
-    #     MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
+        mv openslide-natives/* ./
+    - name: Publish snapshot
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: publish
+      env:
+        MAVEN_USER: ${{ secrets.MAVEN_USER }}
+        MAVEN_PASS: ${{ secrets.MAVEN_PASS }}

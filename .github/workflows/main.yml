@@ -5,7 +5,7 @@ name: Build main
 
 on:
   push:
-    # branches: [main]
+    branches: [main]
 
 permissions:
   contents: read
@@ -33,6 +33,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       builder_repo_and_digest: ${{ needs.setup.outputs.builder_repo_and_digest }}
+      openslide_repo: openslide/openslide
       openslide_ref: main
       openslide_winbuild_repo: ${{ github.repository }}
       openslide_winbuild_ref: ${{ github.ref }}

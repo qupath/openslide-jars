@@ -10,14 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
     - uses: actions/checkout@v3
+
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
+
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+
     - name: Download artifact
       id: download-artifact
       uses: dawidd6/action-download-artifact@v2
@@ -25,7 +29,8 @@ jobs:
         repo: qupath/openslide-crossplatform-builds
         workflow: main.yml
         name: openslide-natives
-        name_is_regexp: true
+        name_is_regexp: false
+
     - name: Publish snapshot
       uses: gradle/gradle-build-action@v2.4.2
       with:

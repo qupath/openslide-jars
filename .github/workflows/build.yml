@@ -127,18 +127,18 @@ jobs:
     strategy:
       matrix:
         include:
-          # - arch: i686
-          #   os: win
-          #   platform: ubuntu-latest
-          #   container: ghcr.io/alanocallaghan/winbuild-builder:latest
-          - arch: x86_64
+          - arch: i686
             os: win
             platform: ubuntu-latest
             container: ghcr.io/alanocallaghan/winbuild-builder:latest
           - arch: x86_64
+            os: win
+            platform: ubuntu-latest
+            container: ghcr.io/openslide/winbuild-builder:latest
+          - arch: x86_64
             os: linux
             platform: ubuntu-latest
-            container: ghcr.io/alanocallaghan/winbuild-builder:latest
+            container: ghcr.io/openslide/winbuild-builder:latest
           - arch: x86_64
             os: mac
             platform: macos-latest

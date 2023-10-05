@@ -127,14 +127,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: i686
-            os: win
-            platform: ubuntu-latest
-            container: ghcr.io/alanocallaghan/winbuild-builder:latest
-          - arch: x86_64
-            os: win
-            platform: ubuntu-latest
-            container: ghcr.io/openslide/winbuild-builder:latest
+          # - arch: i686
+          #   os: win
+          #   platform: ubuntu-latest
+          #   container: ghcr.io/alanocallaghan/winbuild-builder:latest
+          # - arch: x86_64
+          #   os: win
+          #   platform: ubuntu-latest
+          #   container: ghcr.io/openslide/winbuild-builder:latest
           - arch: x86_64
             os: linux
             platform: ubuntu-latest
@@ -209,9 +209,9 @@ jobs:
           # - image: windows-latest
           #   os: win
           #   arch: i686
-          - image: windows-latest
-            os: win
-            arch: x86_64
+          # - image: windows-latest
+          #   os: win
+          #   arch: x86_64
           - image: ubuntu-latest
             os: linux
             arch: x86_64
@@ -282,6 +282,21 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{ needs.sdist.outputs.artifact }}
+      
+      - name: Download openslide windows build
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with: 
+          repo: openslide/openslide-winbuild
+          workflow: main.yml
+          name: openslide-windows-main-*
+          name_is_regexp: true
+      - name: Wrangle openslide windows build
+        shell: bash
+        run: |
+          mv openslide-windows-main-*/openslide-windows-main-*/openslide-win64-main-*.zip ./
+          unzip openslide-win64-main-*.zip
+
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
@@ -310,13 +325,12 @@ jobs:
           mv libopenslide.dylib darwin-x86-64/
 
           # windows
-          unzip -p openslide-win-x86_64-main.zip openslide-win-x86_64-main/bin/libopenslide-0.dll > openslide.dll
+          unzip -p openslide-win64-main-*.zip openslide-win64-main-*/bin/libopenslide-0.dll > openslide.dll
           chmod 755 openslide.dll
           mv openslide.dll win32-x86-64/
 
           unzip openslide-build-main.zip
           mv openslide-build-main openslide-sources
-          rm openslide-win-x86_64-main.zip openslide-mac-x86_64-main.tar.gz openslide-mac-arm64-main.tar.gz openslide-linux-x86_64-main.tar.gz openslide-build-main.zip
       - name: Make jar
         shell: bash
         run: |

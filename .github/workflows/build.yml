@@ -105,7 +105,7 @@ jobs:
       - name: debug
         shell: bash
         run: |
-          ls -lah override
+          ls -lah override/openslide
       - name: Build source zip
         run: ./build.sh -p "${{ inputs.pkgver }}" sdist
       - name: Prep artifact

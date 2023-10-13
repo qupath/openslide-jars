@@ -268,7 +268,7 @@ jobs:
           OPENSLIDE_DEBUG=synthetic $showprops ""
 
   jar:
-    name: Package openslide JAR
+    name: Package openslide Jar
     runs-on: ubuntu-latest
     needs: [sdist, bdist]
     steps:
@@ -283,20 +283,12 @@ jobs:
         with:
           name: ${{ needs.sdist.outputs.artifact }}
       
-      - name: Download openslide windows build
-        id: download-artifact
-        uses: dawidd6/action-download-artifact@v2
-        with: 
-          repo: openslide/openslide
-          run_id: 6407412709
-          name: openslide-windows-main-*
-          name_is_regexp: true
       - name: Wrangle openslide windows build
         shell: bash
-        run: |
-          mv openslide-windows-main-*/openslide-windows-main-*/openslide-win64-main-*.zip ./
-          unzip openslide-win64-main-*.zip
-
+        run: | 
+          wget --quiet https://github.com/openslide/openslide-winbuild/releases/download/v20231011/openslide-win64-20231011.zip
+          unzip -p openslide-win64-20231011.zip openslide-win64-20231011/bin/libopenslide-1.dll > openslide.dll
+          chmod 755 openslide.dll
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'

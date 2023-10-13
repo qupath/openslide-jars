@@ -106,13 +106,13 @@ wget="wget -q"
 get_artifacts() {
     case "$os" in
         win)
-            openslide_artifacts="libopenslide-0.dll openslide-quickhash1sum.exe openslide-show-properties.exe openslide-write-png.exe slidetool.exe"
+            openslide_artifacts="libopenslide-1.dll openslide-quickhash1sum.exe openslide-show-properties.exe openslide-write-png.exe slidetool.exe"
             ;;
         linux)
-            openslide_artifacts="libopenslide.so libopenslide.so.0 libopenslide.so.0.4.1 openslide-quickhash1sum openslide-show-properties openslide-write-png"
+            openslide_artifacts="libopenslide.so libopenslide.so.1 libopenslide.so.1.0.0 openslide-quickhash1sum openslide-show-properties openslide-write-png"
             ;;
         mac)
-            openslide_artifacts="libopenslide.dylib libopenslide.0.dylib openslide-quickhash1sum openslide-show-properties openslide-write-png"
+            openslide_artifacts="libopenslide.dylib libopenslide.1.dylib openslide-quickhash1sum openslide-show-properties openslide-write-png"
             ;;
     esac
 }

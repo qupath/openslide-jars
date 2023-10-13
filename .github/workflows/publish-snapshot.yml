@@ -26,7 +26,7 @@ jobs:
       uses: dawidd6/action-download-artifact@v2
       with: 
         repo: qupath/openslide-crossplatform-builds
-        run_id: 6513576086
+        run_id: 6513748874
         name: openslide-natives
         name_is_regexp: false
 

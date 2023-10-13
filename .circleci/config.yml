@@ -6,6 +6,7 @@ jobs:
       xcode: "14.2.0"
     steps:
       - checkout
+      
       - run: git clone git@github.com:openslide/openslide.git override/openslide
       - run: brew install meson ninja flock
       - run: brew uninstall git pcre2 xz --ignore-dependencies

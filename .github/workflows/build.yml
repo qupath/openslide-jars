@@ -10,22 +10,6 @@ on:
         description: Docker repo and image digest of the builder container
         required: true
         type: string
-      openslide_repo:
-        description: Override OpenSlide with this repo
-        required: false
-        type: string
-      openslide_ref:
-        description: Override OpenSlide with this openslide_repo ref
-        required: false
-        type: string
-      openslide_java_repo:
-        description: Override OpenSlide Java with this repo
-        required: false
-        type: string
-      openslide_java_ref:
-        description: Override OpenSlide Java with this openslide_java_repo ref
-        required: false
-        type: string
       openslide_winbuild_repo:
         description: Use openslide-winbuild from this repo
         required: false
@@ -69,32 +53,6 @@ jobs:
           repository: ${{ inputs.openslide_winbuild_repo }}
           ref: ${{ inputs.openslide_winbuild_ref }}
 
-      - name: Check out OpenSlide
-        if: inputs.openslide_repo != ''
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ inputs.openslide_repo }}
-          ref: ${{ inputs.openslide_ref }}
-          path: override/openslide
-          persist-credentials: false
-      - name: Check out OpenSlide Java
-        if: inputs.openslide_java_repo != ''
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ inputs.openslide_java_repo }}
-          ref: ${{ inputs.openslide_java_ref }}
-          path: override/openslide_java
-          persist-credentials: false
-      - name: Collect overrides
-        if: inputs.openslide_repo != ''
-        run: tar cf overrides.tar override
-      - name: Upload overrides
-        if: inputs.openslide_repo != ''
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-overrides
-          path: overrides.tar
-
       - name: Cache sources
         uses: actions/cache@v3
         with:
@@ -111,10 +69,6 @@ jobs:
           echo "artifact=$artifact" >> $GITHUB_OUTPUT
           mkdir -p "artifacts/$artifact"
           mv "openslide-build-${{ inputs.pkgver }}.zip" "artifacts/$artifact"
-          if [ -d override/openslide ]; then
-              suffix=$(git -C override/openslide rev-parse HEAD | cut -c-7)
-              echo "version_suffix=$suffix" >> $GITHUB_OUTPUT
-          fi
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
@@ -160,14 +114,6 @@ jobs:
               unzip "openslide-build-${{ inputs.pkgver }}.zip")
           mv "${{ needs.sdist.outputs.artifact }}/openslide-build-${{ inputs.pkgver }}"/* .
           rm -r "${{ needs.sdist.outputs.artifact }}"
-      - name: Download overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
-        uses: actions/download-artifact@v3
-        with:
-          name: build-overrides
-      - name: Unpack overrides
-        if: inputs.openslide_repo != '' || inputs.openslide_java_repo != ''
-        run: tar xf overrides.tar
       - name: Remove homebrew dependencies
         if: matrix.platform == 'macos-latest'
         shell: bash

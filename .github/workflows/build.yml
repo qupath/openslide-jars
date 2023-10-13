@@ -53,13 +53,6 @@ jobs:
           repository: ${{ inputs.openslide_winbuild_repo }}
           ref: ${{ inputs.openslide_winbuild_ref }}
 
-      - name: Cache sources
-        uses: actions/cache@v3
-        with:
-          key: winbuild-tar
-          path: |
-            meson/subprojects/packagecache
-            tar
       - name: Build source zip
         run: ./build.sh -p "${{ inputs.pkgver }}" sdist
       - name: Prep artifact

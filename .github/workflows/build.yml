@@ -317,15 +317,15 @@ jobs:
           mv libopenslide.dylib darwin-aarch64/
           
           # linux
-          tar xvf openslide-linux-x86_64-main.tar.gz openslide-linux-x86_64-main/lib/libopenslide.so.0.4.1 --strip-components=2
-          mv libopenslide.so.0.4.1 linux-x86-64/libopenslide.so
+          tar xvf openslide-linux-x86_64-main.tar.gz openslide-linux-x86_64-main/lib/libopenslide.so.1.0.0 --strip-components=2
+          mv libopenslide.so.1.0.0 linux-x86-64/libopenslide.so
           
           # max x86_64
           tar xvf openslide-mac-x86_64-main.tar.gz openslide-mac-x86_64-main/lib/libopenslide.dylib --strip-components=2
           mv libopenslide.dylib darwin-x86-64/
 
           # windows
-          unzip -p openslide-win64-main-*.zip openslide-win64-main-*/bin/libopenslide-0.dll > openslide.dll
+          unzip -p openslide-win64-main-*.zip openslide-win64-main-*/bin/libopenslide-1.dll > openslide.dll
           chmod 755 openslide.dll
           mv openslide.dll win32-x86-64/
 

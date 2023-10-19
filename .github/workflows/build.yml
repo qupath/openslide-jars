@@ -78,10 +78,10 @@ jobs:
           #   os: win
           #   platform: ubuntu-latest
           #   container: ghcr.io/alanocallaghan/winbuild-builder:latest
-          # - arch: x86_64
-          #   os: win
-          #   platform: ubuntu-latest
-          #   container: ghcr.io/openslide/winbuild-builder:latest
+          - arch: x86_64
+            os: win
+            platform: ubuntu-latest
+            container: ghcr.io/openslide/winbuild-builder:latest
           - arch: x86_64
             os: linux
             platform: ubuntu-latest
@@ -128,13 +128,6 @@ jobs:
           fi
           mv "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}.${EXT}" \
               "artifacts/${{ needs.sdist.outputs.artifact }}"
-      - name: Debugging stuff
-        if: matrix.platform == 'macos-latest'
-        run: |
-          pushd "openslide-${{ matrix.os }}-${{ matrix.arch }}-${{ inputs.pkgver }}" 
-          echo "otool -L lib/libopenslide.dylib"
-          otool -L lib/libopenslide.dylib
-          popd      
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
@@ -148,9 +141,9 @@ jobs:
           # - image: windows-latest
           #   os: win
           #   arch: i686
-          # - image: windows-latest
-          #   os: win
-          #   arch: x86_64
+          - image: windows-latest
+            os: win
+            arch: x86_64
           - image: ubuntu-latest
             os: linux
             arch: x86_64
@@ -222,12 +215,6 @@ jobs:
         with:
           name: ${{ needs.sdist.outputs.artifact }}
       
-      - name: Wrangle openslide windows build
-        shell: bash
-        run: | 
-          wget --quiet https://github.com/openslide/openslide-winbuild/releases/download/v20231011/openslide-win64-20231011.zip
-          unzip -p openslide-win64-20231011.zip openslide-win64-20231011/bin/libopenslide-1.dll > openslide.dll
-          chmod 755 openslide.dll
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
@@ -256,6 +243,8 @@ jobs:
           mv libopenslide.dylib darwin-x86-64/
 
           # windows
+          unzip -p openslide-win-x86_64-main.zip openslide-win-x86_64-main/bin/libopenslide-1.dll > openslide.dll
+          chmod 755 openslide.dll  
           mv openslide.dll win32-x86-64/
 
           unzip openslide-build-main.zip

@@ -256,6 +256,7 @@ jobs:
           jar cvf openslide-natives-darwin-x86-64.jar darwin-x86-64 licenses
           jar cvf openslide-natives-linux-x86-64.jar linux-x86-64 licenses
           jar cvf openslide-natives-win32-x86-64.jar win32-x86-64 licenses
+          jar cvf openslide-natives.jar linux-x86_64 darwin-x86_64 darwin-aarch64 win32-x86-64 licenses
           mkdir -p openslide-natives
           mv *.jar openslide-natives
       - name: Upload jar

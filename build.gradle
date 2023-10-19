@@ -25,6 +25,7 @@ publishing {
         maven(MavenPublication) {
             groupId group
             version version
+            artifact (file("openslide-natives.jar"))
             artifact (file("openslide-natives-darwin-aarch64.jar")) {
                 classifier "darwin-aarch64"
             }

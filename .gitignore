@@ -20,3 +20,7 @@ openslide-*
 .gradle
 build
 tmp
+**/*.jar
+downloads
+artifacts
+build

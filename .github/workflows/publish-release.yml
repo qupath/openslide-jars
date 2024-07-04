@@ -1,12 +1,14 @@
 name: Publish release to SciJava Maven
 
 on: 
-  release:
-    types: [published]
+  workflow_dispatch:
 
 jobs:
+  jars:
+    name: Build jars
+    uses: ./.github/workflows/jars.yml
   publish:
-
+    needs: jars
     runs-on: ubuntu-latest
 
     steps:
@@ -21,15 +23,6 @@ jobs:
 
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-
-    - name: Download artifact
-      id: download-artifact
-      uses: dawidd6/action-download-artifact@v2
-      with: 
-        repo: qupath/openslide-crossplatform-builds
-        run_id: 6577334106
-        name: openslide-natives
-        name_is_regexp: false
 
     - name: Publish snapshot
       uses: gradle/gradle-build-action@v2.4.2

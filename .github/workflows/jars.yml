@@ -1,0 +1,23 @@
+name: Create jars
+
+on:
+  - workflow_dispatch
+  - workflow_call
+
+jobs:
+
+  jars:
+
+    runs-on: ubuntu-latest
+
+    steps:
+        - name: Download
+          run: ./download-artifacts.rb
+        - name: Process
+          run: ./process-artifacts.sh
+
+        - uses: actions/upload-artifact@v4
+          with:
+            name: openslide-natives
+            path: build/openslide-natives*.jar
+            retention-days: 1

@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'io.github.qupath'
-version = '4.0.0.3-SNAPSHOT'
+version = '4.0.0.6'
 
 publishing {
     repositories {
@@ -36,6 +36,9 @@ publishing {
             }
             artifact (file("openslide-natives-linux-x86-64.jar")) {
                 classifier "linux-x86_64"
+            }
+            artifact (file("openslide-natives-linux-aarch64.jar")) {
+                classifier "linux-aarch64"
             }
             pom {
                 licenses {

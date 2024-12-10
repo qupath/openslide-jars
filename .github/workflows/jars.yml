@@ -26,7 +26,7 @@ jobs:
           run: ./download-artifacts.rb -v ${{ inputs.openslide_version }}
 
         - name: Process binaries into jars
-          run: process-artifacts.sh
+          run: ./process-artifacts.sh
 
         - uses: actions/upload-artifact@v4
           name: Upload jars

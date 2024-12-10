@@ -2,19 +2,26 @@ name: Publish release to SciJava Maven
 
 on: 
   workflow_dispatch:
+    inputs:
+      openslide_version:
+        description: Semantic version of openslide binaries to download.
+        type: string
+        default: "4.0.0.6"
+        required: true
 
 jobs:
   jars:
     name: Build jars
     uses: ./.github/workflows/jars.yml
+    with:
+      openslide_version: inputs.openslide_version
   publish:
     needs: jars
     runs-on: ubuntu-latest
 
     steps:
-
     - uses: actions/checkout@v3
-    
+
     - uses: actions/download-artifact@v4
       with:
         merge-multiple: true  
@@ -31,7 +38,7 @@ jobs:
     - name: Publish snapshot
       uses: gradle/gradle-build-action@v2.4.2
       with:
-        arguments: publish -P release=true
+        arguments: publish -P release=true -P openslide_version=${{ inputs.openslide_version }}
       env:
         MAVEN_USER: ${{ secrets.MAVEN_USER }}
         MAVEN_PASS: ${{ secrets.MAVEN_PASS }}

@@ -10,7 +10,7 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: example.rb [options]"
 
-  opts.on("-v", "--version", "Target version") do |v|
+  opts.on("-vVERSION", "--version=VERSION", "Target version") do |v|
     options[:version] = v
   end
 end.parse!

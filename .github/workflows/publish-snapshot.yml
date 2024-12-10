@@ -41,7 +41,7 @@ jobs:
     - name: Publish snapshot
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: publish -P openslide_version=${{ inputs.openslide_version }}-SNAPSHOT
+        arguments: publish -P openslideVersion=${{ inputs.openslide_version }}-SNAPSHOT
       env:
         MAVEN_USER: ${{ secrets.MAVEN_USER }}
         MAVEN_PASS: ${{ secrets.MAVEN_PASS }}

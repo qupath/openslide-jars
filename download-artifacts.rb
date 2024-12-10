@@ -15,7 +15,7 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-target_release = options[:version] || "4.0.0.6"
+version = options[:version] || "4.0.0.6"
 owner="openslide"
 repo="openslide-bin"
 `mkdir -p downloads artifacts`
@@ -37,7 +37,7 @@ end
 
 releases = JSON.parse(response.body)
 release = releases.find do |release|
-    release["tag_name"] == "v#{target_release}"
+    release["tag_name"] == "v#{version}"
 end
 
 
@@ -69,7 +69,6 @@ end.each do |asset|
 end
 
 platforms = ["linux-x86_64", "macos-arm64-x86_64", "windows-x64", "linux-aarch64"]
-version = target_release
 platforms.each do |platform|
     `mkdir -p artifacts/#{platform}`
     `cp -rL downloads/openslide-bin-#{version}-#{platform}/lib/* artifacts/#{platform}/`

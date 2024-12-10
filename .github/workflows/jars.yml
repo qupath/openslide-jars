@@ -1,24 +1,35 @@
 name: Create jars
 
 on:
-  - workflow_dispatch
-  - workflow_call
+  workflow_dispatch:
+    inputs:
+      openslide_version:
+        description: Semantic version of openslide binaries to download.
+        type: string
+        default: "4.0.0.6"
+        required: true
+  workflow_call:
+    inputs:
+      openslide_version:
+        description: Semantic version of openslide binaries to download.
+        type: string
+        default: "4.0.0.6"
+        required: true
 
 jobs:
-
   jars:
-
     runs-on: ubuntu-latest
-
     steps:
         - uses: actions/checkout@v4
 
-        - name: Download
-          run: ./download-artifacts.rb
-        - name: Process
-          run: ./process-artifacts.sh
+        - name: Download binaries
+          run: ./download-artifacts.rb -v ${{ inputs.openslide_version }}
+
+        - name: Process binaries into jars
+          run: process-artifacts.sh
 
         - uses: actions/upload-artifact@v4
+          name: Upload jars
           with:
             name: openslide-natives
             path: build/openslide-natives*.jar

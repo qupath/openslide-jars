@@ -11,17 +11,5 @@ Releases and snapshots are published to
 
 ## Making a new release
 
-The version downloaded is specified in `download-artifacts.rb`, while the version uploaded to Maven is specified in `build.gradle`.
-eg, to download release 4.0.1, edit the default version downloaded to be:
-
-```ruby
-target_release = options[:version] || "v4.0.1"
-```
-
-Then, to publish this version as `4.0.1-SNAPSHOT` on Maven, edit the gradle build script accordingly:
-
-```groovy
-version = '4.0.1'
-```
-
-and run the relevant github action (publish release or snapshot, depending).
+You can make jars or create a snapshot/release by navigating to the actions tag
+and running the relevant action, specifying a version presetn on openslide-bin.
